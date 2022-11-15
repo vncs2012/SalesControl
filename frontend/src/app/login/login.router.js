@@ -3,15 +3,15 @@ import {Routes, Route } from "react-router-dom";
 import { Home } from "../home";
 import { Login } from "./login";
 import { Register } from "./register";
-import './assets/style.css';
+import { AuthApi } from "../../App";
 
-export const Rotas = (AuthApi) => {
+export const Rotas = () => {
     const Auth = React.useContext(AuthApi);
     return (
       <Routes>
-        <Route path="/" element={() => (!Auth.auth ? <Home /> : <Login />)} />
+        <Route path="/" element={Auth.auth ? <Home /> : <Login />} />
         <Route path="/register"  element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={!Auth.auth ? <Login /> :  window.location.href = "/"} />
       </Routes>
     );
   };

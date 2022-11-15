@@ -1,39 +1,27 @@
-import React, { useState } from "react";
-import { onThemeChange } from './assets/script';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import React, { useEffect, useState } from "react";
+import { changeTheme, onThemeChange } from './assets/script';
+import { logar } from "./loginApi";
+import './assets/style.css';
 
-export function Login() {
+export const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [theme, setTheme] = useState("");
     const handleSubmit = async (evt) => {
-        console.log('entrou')
         if (evt) {
             evt.preventDefault();
         }
-        const data = {
-            username: username,
-            password: password,
-        };
-        console.log(data)
-        const news = async () => {
-            let res = await axios
-                .post("http://127.0.0.1:8000/login/", data)
-                .then((response) => {
-                    console.log(response);
-                    Cookies.set("token", response.data.access_token);
-                    return response;
-                })
-                .catch((error) => {
-                     console.log(error.message);
-                });
-            return res;
-        };
-        let x = await news();
+        const data = { username: username, password: password, };
+        let x = await logar(data);
         if (x) {
-            window.location.reload();
+            window.location.href = '/';
         }
     };
+    useEffect(() => {
+        let tm = window.localStorage.getItem("theme") ?? "dark";
+        setTheme(tm)
+        changeTheme(tm);
+    }, [])
     return (
         <>
             <div className="themed">

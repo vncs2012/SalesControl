@@ -1,7 +1,7 @@
-window.onload = () => {
-    const theme = window.localStorage.getItem("theme") ?? "dark";
-    changeTheme(theme);
-  };
+// window.onload = () => {
+//     const theme = window.localStorage.getItem("theme") ?? "dark";
+//     changeTheme(theme);
+//   };
   
  export const onThemeChange = () => {
     const checkbox = document.getElementById("switch");
@@ -9,12 +9,11 @@ window.onload = () => {
     changeTheme(theme);
   };
   
-  const changeTheme = (theme) => {
+export const changeTheme = (theme) => {
     const illustration = document.getElementById("illustration");
     illustration.style.backgroundImage = `url('./${theme}.jpg')`;
     const checkbox = document.getElementById("switch");
     checkbox.checked = theme === "dark";
     window.localStorage.setItem("theme", theme);
     document.documentElement.setAttribute("data-theme", theme);
-    console.log(theme);
   };

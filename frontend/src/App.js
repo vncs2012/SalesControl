@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import './App.css';
 import { Index as Login } from "./app/login/index"
 import Cookies from "js-cookie";
+import { Home } from "./app/home";
 
-const AuthApi = React.createContext();
-const TokenApi = React.createContext();
+export const AuthApi = React.createContext();
+export const TokenApi = React.createContext();
 
 function App() {
   const [auth, setAuth] = useState(false);
@@ -18,12 +19,12 @@ function App() {
   };
   React.useEffect(() => {
     readCookie();
-  }, []);
+  }, [token,auth]);
   return (
     <>
       <AuthApi.Provider value={{ auth, setAuth }}>
         <TokenApi.Provider value={{ token, setToken }}>
-          <Login authapi={AuthApi} />
+          {(!auth ? <Login /> : <Home />)}
           </TokenApi.Provider>
       </AuthApi.Provider>
     </>

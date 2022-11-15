@@ -9,9 +9,9 @@ def login(request):
     #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail = f'No user found with this {request.username} username')
     # if not Hash.verify(user["password"],request.password):
     #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail = f'Wrong Username or password')
-    # access_token = create_access_token(data={"sub": request.username })
-    print(request)
-    # return {"access_token": access_token, "token_type": "bearer"}
+    access_token = create_access_token(data={"sub": request.username })
+    print(request.username)
+    return {"access_token": access_token, "token_type": "bearer"}
 
 def create_user(request):
     hashed_pass = Hash.bcrypt(request.password)
