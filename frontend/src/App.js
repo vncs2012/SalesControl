@@ -24,7 +24,7 @@ function App() {
     <>
       <AuthApi.Provider value={{ auth, setAuth }}>
         <TokenApi.Provider value={{ token, setToken }}>
-          {(!auth ? <Login /> : <Home />)}
+          {(auth ? <Login /> : <Home />)}
           </TokenApi.Provider>
       </AuthApi.Provider>
     </>

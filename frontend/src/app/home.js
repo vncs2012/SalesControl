@@ -1,29 +1,56 @@
-import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
-import { AuthApi, TokenApi } from "../App";
-import { getdata } from "./homeApi";
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import { Menu } from './Menu';
+import { Rotas } from './Menu/rotas';
 
-export const Home = () => {
-    const Token = React.useContext(TokenApi);
-    const Auth = React.useContext(AuthApi);
-    const [data, setData] = useState("");
-    const handleonclick = () => {
-        Auth.setAuth(false);
-        Cookies.remove("token");
+const drawerWidth = 240;
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+    ({ theme, open }) => ({
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        marginLeft: `-${drawerWidth}px`,
+        ...(open && {
+            transition: theme.transitions.create('margin', {
+                easing: theme.transitions.easing.easeOut,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+            marginLeft: 0,
+        }),
+    }),
+);
+
+function DashboardContent() {
+    const [open, setOpen] = React.useState(false);
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
     };
 
-    useEffect(() => {
-        async function fetchData() {
-            let x = await getdata(Token);
-            setData(x);
-        }
-        fetchData()
-    }, []);
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+
     return (
-        <>
-            <h2>Home</h2>
-            <button onClick={handleonclick}>Logout</button>
-            <h1 id="1">{data.data}</h1>
-        </>
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <Menu open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+            <Main open={open}>
+                <Toolbar />
+                <Rotas />
+            </Main>
+        </Box>
+
     );
-};
+}
+
+export const Home = () => {
+    return <DashboardContent />;
+}
