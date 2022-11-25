@@ -82,8 +82,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export const Menu = ({ open, handleDrawerOpen, handleDrawerClose }) => {
     const theme = useTheme();
     return (<>
-        <AppBar position="fixed" open={open}>
-            <Toolbar>
+        <AppBar  position="absolute" open={open}>
+            <Toolbar
+             sx={{
+                pr: '24px', // keep right padding when drawer closed
+              }}
+            >
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"
@@ -96,8 +100,12 @@ export const Menu = ({ open, handleDrawerOpen, handleDrawerClose }) => {
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" noWrap component="div">
-                    Mini variant drawer
+                <Typography   component="h1"
+                        variant="h6"
+                        color="inherit"
+                        noWrap
+                        sx={{ flexGrow: 1 }}>
+                  Sales controller
                 </Typography>
             </Toolbar>
         </AppBar>

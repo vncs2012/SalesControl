@@ -6,6 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import { Grid, Paper } from '@mui/material';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -52,8 +53,10 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Orders() {
+export const Orders = () => {
   return (
+    <Grid item xs={12}>
+      <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
     <React.Fragment>
       <Title>Recent Orders</Title>
       <Table size="small">
@@ -82,5 +85,7 @@ export default function Orders() {
         See more orders
       </Link>
     </React.Fragment>
+      </Paper>
+    </Grid>
   );
 }

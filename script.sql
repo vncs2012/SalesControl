@@ -2,8 +2,8 @@ create schema sales;
 
 create table sales.user(
     id_user serial4 not null primary key,
-    ds_login text not null,
-    ds_password text not null,
+    username text not null,
+    password text not null,
     email text null
 );
 

@@ -5,7 +5,8 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { Menu } from './Menu';
 import { Rotas } from './Menu/rotas';
-
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Container } from '@mui/material';
 const drawerWidth = 240;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -26,6 +27,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     }),
 );
 
+const mdTheme = createTheme();
 function DashboardContent() {
     const [open, setOpen] = React.useState(false);
 
@@ -39,15 +41,19 @@ function DashboardContent() {
 
 
     return (
+        <ThemeProvider theme={mdTheme}>
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <Menu open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
-            <Main open={open}>
-                <Toolbar />
-                <Rotas />
-            </Main>
-        </Box>
 
+                    <Container maxWidth="lg" sx={{ mt: 24, mb: 24 }}>
+                        <Main open={open}>
+                            <Toolbar />
+                            <Rotas />
+                        </Main>
+                    </Container>
+            </Box>
+        </ThemeProvider>
     );
 }
 

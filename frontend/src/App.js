@@ -20,11 +20,12 @@ function App() {
   React.useEffect(() => {
     readCookie();
   }, [token,auth]);
+  console.log(auth)
   return (
     <>
       <AuthApi.Provider value={{ auth, setAuth }}>
         <TokenApi.Provider value={{ token, setToken }}>
-          {(auth ? <Login /> : <Home />)}
+          {(!auth ? <Login /> : <Home />)}
           </TokenApi.Provider>
       </AuthApi.Provider>
     </>

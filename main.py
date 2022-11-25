@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from db.oauth import get_current_user
 
-from app.model.login import User,Login
+from app.model.login import User_schema,Login
 from app.controller import  login as login_sistema,create_user
 
 app = FastAPI()
@@ -21,11 +21,11 @@ app.add_middleware(
 
 
 @app.get("/")
-def home(current_user:User = Depends(get_current_user)):
+def home(current_user:User_schema = Depends(get_current_user)):
 	return {"data":"Hello OWrld"}
 
 @app.post('/register')
-def register_user(request:User):
+def register_user(request:User_schema):
     return create_user(request)
 
 @app.post('/login')
