@@ -13,7 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { getdata } from './api'
 import { useEffect } from 'react';
 import { useState } from 'react';
-import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import { Options } from '../../layout/Options';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -74,7 +74,7 @@ export const List = () => {
                                     {row.username}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">{row.email}</StyledTableCell>
-                                <StyledTableCell align="center"><CreateOutlinedIcon /></StyledTableCell>
+                                <StyledTableCell align="center"><Options id={row.id_user} service={'user'} /></StyledTableCell>
                             </StyledTableRow>
                         )):'-'}
                     </TableBody>

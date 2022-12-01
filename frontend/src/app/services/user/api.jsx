@@ -15,3 +15,17 @@ export const getdata = async () => {
     return res;
     }
 };
+export const insert = async (form) => {
+    let token = Cookies.get("token");
+    if (token) {
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+        let res = await axios
+            .post("http://127.0.0.1:8000/user", { ...form, headers })
+            .then((response) => {
+                return response.data;
+            });
+        return res;
+    }
+};

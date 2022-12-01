@@ -24,10 +24,6 @@ app.add_middleware(
 def home(current_user:User_schema = Depends(get_current_user)):
 	return {"data":"Hello OWrld"}
 
-@app.post('/register')
-def register_user(request:User_schema):
-    return create_user(request)
-
 @app.post('/login')
 def login(request:OAuth2PasswordRequestForm = Depends()):
     return login_sistema(request)
@@ -35,3 +31,8 @@ def login(request:OAuth2PasswordRequestForm = Depends()):
 @app.get('/user')
 def user_fetch_all():
     return get_users()
+
+@app.post('/user')
+def register_user(request:User_schema):
+    return create_user(request)
+

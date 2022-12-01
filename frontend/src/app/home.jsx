@@ -5,10 +5,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { Menu } from './layout/index'
-import { Rotas } from './layout/rotas'
 import './HomeStyle.css';
 import { Copyright } from './layout/Copyright';
 import { createTheme, ThemeProvider } from '@mui/material';
+import { Routers } from './layout/Router';
 
 const darkTheme = createTheme({
     // palette: {
@@ -40,7 +40,7 @@ export const Home = () => {
                     <Toolbar />
                     <Container maxWidth="lg" sx={{ mt: 2, mb: 2, }}>
                         <Grid container spacing={1}>
-                            <Rotas />
+                            <Routers />
                         </Grid>
                         <Copyright sx={{ pt: 2 }} />
                     </Container>
