@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import './App.css';
 import { Index as Login } from "./app/login/index"
 import Cookies from "js-cookie";
 import { Home } from "./app/home";

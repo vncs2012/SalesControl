@@ -26,7 +26,7 @@ export const Login = () => {
         <>
             <div className="themed">
                 <div className="main">
-                    <div id="illustration"></div>
+                    {theme === "light" ? <div id="illustration"></div> : <div id="illustration-light"></div>}
                     <div className="form-container">
                         <div className="theme-selector">
                             <input
@@ -35,11 +35,9 @@ export const Login = () => {
                                 onChange={onThemeChange}
                                 value="dark"
                             />
-                            <label htmlFor="switch">Toggle</label>
+                            <label htmlFor="switch" className='switch-theme'>Toggle</label>
                         </div>
                         <div className="form-header">
-                            <h3>Entre nessa viagem</h3>
-                            <p>Não tem uma conta? <strong>Cadastre-se</strong></p>
                         </div>
                         <form onSubmit={handleSubmit}>
                             <input placeholder="Usuario"
