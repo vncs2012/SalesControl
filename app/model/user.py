@@ -46,3 +46,21 @@ def fetch_all() ->User:
     with DBConnectionHandler() as db:
         users = db.session.query(User).all()
     return users
+
+
+def delete_user(id: int) -> dict:
+    with DBConnectionHandler() as db:
+        try:
+            user = db.session.query(User).filter(User.id_user == id).first()
+            db.delete(user)
+            return {'status': 200}
+        except:
+            return {'status': 404, 'message': 'Erro ao tentar Deletar'}
+
+
+def find_user(id: int) -> User:
+    with DBConnectionHandler() as db:
+        user = db.session.query(User).filter(User.id_user == id).first()
+        if user:
+            return {'status': 200, 'user': user}
+    return {'status': 404, 'message': 'Usuario não encontrado...'}

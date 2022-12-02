@@ -1,10 +1,10 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from db.oauth import get_current_user
 
 from app.model.user import User_schema, Login
-from app.controller import login as login_sistema, create_user, get_users
+from app.controller import login as login_sistema, create_user, get_users, user_delete,user_find
 
 app = FastAPI()
 origins = [
@@ -36,3 +36,10 @@ def user_fetch_all():
 def register_user(request:User_schema):
     return create_user(request)
 
+@app.delete('/user/{id}')
+def delete_user(id: int):
+    return user_delete(id)
+
+@app.get('/user/{id}')
+def find_user(id: int):
+    return user_find(id)

@@ -35,3 +35,7 @@ class DBConnectionHandler():
     def save_sem_refresh(self, inserir):
         self.session.add(inserir)
         self.session.commit()
+        
+    def delete(self,objeto):
+        self.session.delete(objeto)
+        self.session.commit()

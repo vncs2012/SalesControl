@@ -10,10 +10,11 @@ import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { getdata } from './api'
+import { deleteApi, getdata } from './api'
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Options } from '../../layout/Options';
+import { deleteAlert } from '../../util';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -40,6 +41,7 @@ const fabStyle = {
     right: 16,
 };
 
+
 export const List = () => {
     const [data, setData] = useState([])
     const  getUsers =  async () => {
@@ -51,6 +53,10 @@ export const List = () => {
     useEffect(() => {
         getUsers();
     }, []);
+
+    const handleDelete = (id) => {
+        deleteAlert(deleteApi, id, setData, data, 'id_user')
+    }
     return (
         <>
             <Link to="add" >
@@ -74,7 +80,7 @@ export const List = () => {
                                     {row.username}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">{row.email}</StyledTableCell>
-                                <StyledTableCell align="center"><Options id={row.id_user} service={'user'} /></StyledTableCell>
+                                <StyledTableCell align="center"><Options id={row.id_user} handleDelete={handleDelete} /></StyledTableCell>
                             </StyledTableRow>
                         )):'-'}
                     </TableBody>

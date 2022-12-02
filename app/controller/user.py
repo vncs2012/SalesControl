@@ -2,7 +2,7 @@ from fastapi import HTTPException,status
 from db.jwttoken import create_access_token
 from db.oauth import get_current_user
 from db.hashing import Hash
-from app.model.user import insert,fetch,fetch_all
+from app.model.user import insert, fetch, fetch_all, delete_user,find_user
 
 
 def login(request):
@@ -24,3 +24,9 @@ def create_user(request):
 def get_users():
     return fetch_all()
 
+
+def user_delete(id: int) -> dict:
+    return delete_user(id)
+
+def user_find(id:int):
+    return find_user(id)

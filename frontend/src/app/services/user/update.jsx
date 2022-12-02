@@ -1,19 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, Grid, Paper } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { insert } from './api';
-import { Navigate } from 'react-router-dom';
-import { alertSucesso, hideLoading, showLoading } from '../../util';
+import { find, insert, update as updateApi } from './api';
+import { Navigate, useParams } from 'react-router-dom';
 
-export const Insert = () => {
-    const [form, setForm] = useState({
-        email: '',
-        password: '',
-        username: '',
-    });
-    const [save, setSave] = useState(false)
+export const Update = () => {
+    const [form, setForm] = useState({ email: '', password: '', username: '', });
+    const [update, setUpdate] = useState(false)
+    const params = useParams();
 
     const handleChange = (event) => {
         setForm({
@@ -22,14 +18,22 @@ export const Insert = () => {
         });
     };
 
+
+    useEffect(() => {
+        const getUser = async () => {
+            let user = await find(params.id)
+            if (user) {
+                console.log(user)
+                user.password = ''
+                setForm({ ...user });
+            }
+        };
+        getUser();
+    }, []);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        showLoading()
-        const retorno = await insert(form)
-        if (retorno.id) {
-            hideLoading()
-            alertSucesso(true,setSave,true)
-        }
+        await update(params.id, form, setUpdate)
     }
 
     return (
@@ -54,13 +58,14 @@ export const Insert = () => {
                             type="password"
                             autoComplete="current-password"
                             variant="standard"
+                            placeholder="Preencha apenas se quiser mudar de senha!"
                             value={form.password ?? ""}
                             onChange={handleChange}
                         />
                     </Grid>
                     <Grid item xs={6} md={6}>
                         <TextField id="email" label="E-mail" type="text"
-                            placeholder="Digite o e-mail." variant="standard" 
+                            placeholder="Digite o e-mail." variant="standard"
                             value={form.email ?? ''}
                             onChange={handleChange}
                         />
@@ -77,7 +82,7 @@ export const Insert = () => {
                     </Button>
                 </Grid>
             </Box>
-            {save && (
+            {update && (
                 <Navigate to="/user" replace={true} />
             )}
         </Paper>
