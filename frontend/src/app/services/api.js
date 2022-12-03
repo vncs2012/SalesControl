@@ -1,12 +1,11 @@
 import axios from 'axios';
+import { alertSystem } from '../util';
+import Cookies from "js-cookie";
 
-import { AlertError } from '../components/Alert';
-import { Me, LogoutForce } from '../pages/Sistema/Login/services';
-
-const { token } = Me();
+const token = Cookies.get("token");
 
 export const api = axios.create({
-	baseURL: process.env.REACT_APP_BASE_URL,
+	baseURL: 'http://127.0.0.1:8000/',
 	headers: {
 		Authorization: `Basic ${token}`,
 	},
@@ -20,7 +19,7 @@ api.interceptors.response.use(
 
 		switch (status) {
 			case 500:
-				AlertError(data.message);
+				alertSystem(data.message, 'error');
 				break;
 			case 400:
 				switch (messageError) {
@@ -31,28 +30,25 @@ api.interceptors.response.use(
 						LogoutForce();
 						break;
 					default:
-						AlertError(messageError);
+						alertSystem(messageError, 'error');
 						break;
 				}
-
 				break;
 
 			case 401:
 				if (data.response) {
-					AlertError(data.response);
+					alertSystem(data.response, 'error');
 				}
 
 				if (data.message) {
-					AlertError(data.message);
+					alertSystem(data.message, 'error');
 				}
 				if (data.error) {
-					AlertError(data.error);
+					alertSystem(data.error, 'error');
 				}
-
 				break;
 			case 405:
-				AlertError(data.message);
-
+				alertSystem(data.message, 'error');
 				break;
 			default:
 				break;
@@ -62,3 +58,6 @@ api.interceptors.response.use(
 	},
 );
 
+const LogoutForce = () => {
+	Cookies.remove("token")
+}

@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 class DBConnectionHandler():
     def __init__(self, user='postgres', password='%40postgres', local='localhost', database='postgres',) -> None:
-        self.__connection_string = f'postgresql://{user}:{password}@{local}:5435/{database}'
+        self.__connection_string = f'postgresql://{user}:{password}@{local}:5433/{database}'
         self.__engine = self.__create_database_engine()
         self.session = None
 
@@ -39,3 +39,7 @@ class DBConnectionHandler():
     def delete(self,objeto):
         self.session.delete(objeto)
         self.session.commit()
+    
+    def commit(self):
+        self.session.commit()
+        

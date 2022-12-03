@@ -26,7 +26,8 @@ export const Insert = () => {
         event.preventDefault();
         showLoading()
         const retorno = await insert(form)
-        if (retorno.id) {
+        if (retorno.res === 'created') {
+            console.log(retorno)
             hideLoading()
             alertSucesso(true,setSave,true)
         }

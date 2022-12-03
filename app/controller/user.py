@@ -2,7 +2,7 @@ from fastapi import HTTPException,status
 from db.jwttoken import create_access_token
 from db.oauth import get_current_user
 from db.hashing import Hash
-from app.model.user import insert, fetch, fetch_all, delete_user,find_user
+from app.model.user import insert, fetch, fetch_all, delete_user, find_user, update
 
 
 def login(request):
@@ -30,3 +30,13 @@ def user_delete(id: int) -> dict:
 
 def user_find(id:int):
     return find_user(id)
+
+
+def user_update(id, request):
+    user_object = request
+    print(user_object)
+    if not user_object.password:
+        hashed_pass = Hash.bcrypt(user_object.password)
+        user_object.password = hashed_pass
+    retorno = update(user_object, id)
+    return {"status": 201, "id": retorno}

@@ -37,6 +37,15 @@ def insert(data) -> int:
         db.save(user)
     return user.id_user
 
+def update(data, id) -> int:
+    with DBConnectionHandler() as db:
+        user = db.session.query(User).filter(User.id_user == id).first()
+        user.email = data.email
+        user.username = data.username
+        user.password = user.password if data.password else data.password
+        db.save(user)
+    return user.id_user
+
 def fetch(data) -> User:
     with DBConnectionHandler() as db:
         user = db.session.query(User).filter(User.username == data.username).first()

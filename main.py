@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from db.oauth import get_current_user
 
 from app.model.user import User_schema, Login
-from app.controller import login as login_sistema, create_user, get_users, user_delete,user_find
+from app.controller import login as login_sistema, create_user, get_users, user_delete, user_find, user_update
 
 app = FastAPI()
 origins = [
@@ -18,7 +18,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 @app.get("/")
 def home(current_user:User_schema = Depends(get_current_user)):
@@ -43,3 +42,7 @@ def delete_user(id: int):
 @app.get('/user/{id}')
 def find_user(id: int):
     return user_find(id)
+
+@app.patch('/user/{id}')
+def update_user(id: int,request:User_schema):
+    return user_update(id,request)

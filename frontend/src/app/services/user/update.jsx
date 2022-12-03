@@ -3,8 +3,9 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, Grid, Paper } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { find, insert, update as updateApi } from './api';
+import { find, update as updateApi } from './api';
 import { Navigate, useParams } from 'react-router-dom';
+import { hideLoading } from '../../util';
 
 export const Update = () => {
     const [form, setForm] = useState({ email: '', password: '', username: '', });
@@ -21,11 +22,12 @@ export const Update = () => {
 
     useEffect(() => {
         const getUser = async () => {
-            let user = await find(params.id)
+            let user = await find(params['id'])
             if (user) {
                 console.log(user)
                 user.password = ''
                 setForm({ ...user });
+                hideLoading()
             }
         };
         getUser();
@@ -33,7 +35,8 @@ export const Update = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        await update(params.id, form, setUpdate)
+        console.log(params,form)
+        await updateApi(params.id, form, setUpdate)
     }
 
     return (

@@ -3,6 +3,9 @@ import Swal from 'sweetalert2'
 export const showLoading = (title = 'Salvando Aguarde...') => {
     Swal.fire({
         title: title,
+        showConfirmButton: false,
+        allowEscapeKey: false,
+        allowOutsideClick: false,
         didOpen: () => {
             Swal.showLoading()
         }
@@ -10,7 +13,7 @@ export const showLoading = (title = 'Salvando Aguarde...') => {
 }
 
 export const hideLoading = () => {
-    Swal.hideLoading()
+    Swal.close()
 }
 
 export const alertSucesso = (boFunc, func = null, boUpdate = false) => {
