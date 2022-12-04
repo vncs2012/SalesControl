@@ -2,15 +2,13 @@ import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, Grid, Paper } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import { find, update as updateApi } from './api';
-import { Navigate, useParams } from 'react-router-dom';
-import { hideLoading } from '../../util';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { fetch_all, getdata, search } from './api';
+import { useParams } from 'react-router-dom';
+import { hideLoading, showLoading } from '../../util';
 
-export const Update = () => {
-    const [form, setForm] = useState({ email: '', password: '', username: '', });
-    const [update, setUpdate] = useState(false)
-    const params = useParams();
+export const Search = ({ setData }) => {
+    const [form, setForm] = useState({ email: '', username: '', });
 
     const handleChange = (event) => {
         setForm({
@@ -20,25 +18,28 @@ export const Update = () => {
     };
 
 
-    useEffect(() => {
-        const getUser = async () => {
-            let user = await find(params['id'])
-            if (user) {
-                user.password = ''
-                setForm({ ...user });
-                hideLoading()
-            }
-        };
-        getUser();
-    }, []);
-
     const handleSubmit = async (event) => {
         event.preventDefault();
-        await updateApi(params.id, form, setUpdate)
+        showLoading('Por favor Aguarde...')
+        const { data } = await search(form)
+        if (data) {
+            setData(data)
+            hideLoading()
+        }
+    }
+    const handleClear = async (event) => {
+        event.preventDefault();
+        showLoading('Por favor Aguarde...')
+        const { data } = await fetch_all()
+        if (data) {
+            setData(data)
+            hideLoading()
+            setForm({ email: '', username: '', })
+        }
     }
 
     return (
-        <Paper elevation={3} sx={{ p: 2, width: 1000 }}>
+        <Paper elevation={3} sx={{ p: 1, width: 1000, marginBottom: 2 }}>
             <Box
                 component="form"
                 sx={{
@@ -49,18 +50,6 @@ export const Update = () => {
                     <Grid item xs={6} md={6}>
                         <TextField id="username" label="Usuario" type="text"
                             placeholder="Digite nome do Usuario." variant="standard" value={form.username ?? ''}
-                            onChange={handleChange}
-                        />
-                    </Grid>
-                    <Grid item xs={6} md={6}>
-                        <TextField
-                            id="password"
-                            label="Password"
-                            type="password"
-                            autoComplete="current-password"
-                            variant="standard"
-                            placeholder="Preencha apenas se quiser mudar de senha!"
-                            value={form.password ?? ""}
                             onChange={handleChange}
                         />
                     </Grid>
@@ -78,14 +67,14 @@ export const Update = () => {
                     justifyContent="flex-end"
                     alignItems="center"
                 >
-                    <Button onClick={handleSubmit} variant="contained" endIcon={<SendIcon />} sx={{ float: 'right', position: 'flex', width: 150 }} >
-                        Salvar
+                    <Button onClick={handleClear} sx={{ float: 'right', position: 'flex', width: 200 }} >
+                        Limpar Pesquisa
+                    </Button>
+                    <Button onClick={handleSubmit} endIcon={<SearchOutlinedIcon />} sx={{ float: 'right', position: 'flex', width: 150 }} >
+                        Pesquisar
                     </Button>
                 </Grid>
             </Box>
-            {update && (
-                <Navigate to="/user" replace={true} />
-            )}
         </Paper>
     );
 }

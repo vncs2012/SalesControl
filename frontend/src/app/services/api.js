@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { alertSystem } from '../util';
 import Cookies from "js-cookie";
+import { alertSucesso, alertSystem, hideLoading, showLoading } from "../util";
 
 const token = Cookies.get("token");
 
@@ -60,4 +60,52 @@ api.interceptors.response.use(
 
 const LogoutForce = () => {
 	Cookies.remove("token")
+}
+
+export const _fetch_all = async (url) => {
+	let res = await api.get(url)
+	return res;
+}
+
+export const _insert = async (url, form) => {
+	let res = await api.post(url, { ...form });
+	return res;
+}
+
+export const _deleteApi = async (url, id, state, data_list, id_string) => {
+	showLoading()
+	let {data} = await api.delete(`${url}/${id}`)
+	if (data.status === 200) {
+		hideLoading()
+		alertSucesso(false)
+		state(data_list.filter(d => d[id_string] !== id))
+	} else {
+		hideLoading()
+		alertSystem(data.message, 'error')
+	}
+}
+
+export const _find = async (url, id, model) => {
+	showLoading('Buscando dados...')
+	let { data } = await api.get(`${url}/${id}`)
+	if (data.status === 200) {
+		hideLoading()
+		return data.register;
+	}
+	alertSystem(data.message, 'error')
+}
+
+export const _update = async (url, id, form, func) => {
+	showLoading()
+	let { data } = await api.patch(`${url}/${id}`, { ...form })
+	if (data.status === 201) {
+		alertSucesso(true, func)
+	} else {
+		alertSystem(data.message, 'error')
+	}
+}
+
+export const _search = async (url, form) => {
+	let params = new URLSearchParams(form).toString()
+	return await api.get(`${url}?${params}`)
 }
