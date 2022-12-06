@@ -34,7 +34,6 @@ api.interceptors.response.use(
 						break;
 				}
 				break;
-
 			case 401:
 				if (data.response) {
 					alertSystem(data.response, 'error');

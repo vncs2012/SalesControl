@@ -1,14 +1,15 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Sales } from "../services/sale";
+
 import { User } from "../services/user";
 import { Insert as InsertUser } from "../services/user/insert";
 import { List as ListUser} from "../services/user/list";
 import { Update as UpdateUser } from "../services/user/update";
 
-import { Insert as InsertSale } from "../services/sale/insert";
-import { List as ListSale} from "../services/sale/list";
-import { Update as UpdateSale } from "../services/sale/update";
+import { Orders } from "../services/orders";
+import { Insert as InsertOrders } from "../services/orders/insert";
+import { List as ListOrders} from "../services/orders/list";
+import { Update as UpdateOrders } from "../services/orders/update";
 
 export const Routers = () => {
   return (
@@ -18,10 +19,10 @@ export const Routers = () => {
         <Route path="add" element={<InsertUser />} />
         <Route path=":id/" element={<UpdateUser />} />
       </Route>
-      <Route path="orders/" element={<Sales />} >
-        <Route index element={<ListSale />} />
-        <Route path="add" element={<InsertSale />} />
-        <Route path=":id/" element={<UpdateSale />} />
+      <Route path="orders/" element={<Orders />} >
+        <Route index element={<ListOrders />} />
+        <Route path="add" element={<InsertOrders />} />
+        <Route path=":id/" element={<UpdateOrders />} />
       </Route>
     </Routes>
   );

@@ -10,7 +10,7 @@ import { hideLoading } from '../../util';
 export const Update = () => {
     const [form, setForm] = useState({ email: '', password: '', username: '', });
     const [update, setUpdate] = useState(false)
-    const params = useParams();
+    const { id } = useParams();
 
     const handleChange = (event) => {
         setForm({
@@ -22,7 +22,7 @@ export const Update = () => {
 
     useEffect(() => {
         const getUser = async () => {
-            let user = await find(params['id'])
+            let user = await find(id)
             if (user) {
                 user.password = ''
                 setForm({ ...user });
@@ -30,11 +30,11 @@ export const Update = () => {
             }
         };
         getUser();
-    }, []);
+    }, [id]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        await updateApi(params.id, form, setUpdate)
+        await updateApi(id, form, setUpdate)
     }
 
     return (

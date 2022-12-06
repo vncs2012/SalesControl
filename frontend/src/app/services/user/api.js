@@ -1,6 +1,4 @@
-
-import { alertSucesso, alertSystem, hideLoading, showLoading } from "../../util";
-import { api, _deleteApi, _fetch_all, _find, _insert, _search, _update } from '../api'
+import { _deleteApi, _fetch_all, _find, _insert, _search, _update } from '../api'
 
 const url = 'user'
 export const fetch_all = async () => {

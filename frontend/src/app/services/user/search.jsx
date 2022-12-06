@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, Grid, Paper } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import { fetch_all, getdata, search } from './api';
-import { useParams } from 'react-router-dom';
+import { fetch_all, search } from './api';
 import { hideLoading, showLoading } from '../../util';
 
 export const Search = ({ setData }) => {

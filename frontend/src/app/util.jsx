@@ -1,4 +1,7 @@
+import React from 'react'
 import Swal from 'sweetalert2'
+import { NumericFormat } from 'react-number-format';
+import { format } from 'date-fns'
 
 export const showLoading = (title = 'Salvando Aguarde...') => {
     Swal.fire({
@@ -71,3 +74,31 @@ export const alertSystem = (text, icon) => {
         confirmButtonText: 'ok!'
     })
 }
+
+export const formatDate = (date) => {
+    date = new Date(date)
+    return date.toLocaleString("pt-BR")
+}
+
+export const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+        <NumericFormat
+            {...other}
+            getInputRef={ref}
+            onValueChange={(values) => {
+                onChange({
+                    target: {
+                        name: props.name,
+                        value: values.value,
+                    },
+                });
+            }}
+            decimalScale={2}
+            thousandsGroupStyle={'thousand'}
+            fixedDecimalScale
+            thousandSeparator
+            prefix="R$"
+        />
+    );
+});

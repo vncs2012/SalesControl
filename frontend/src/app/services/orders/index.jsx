@@ -3,9 +3,9 @@ import Box from '@mui/material/Box';
 import { Outlet } from 'react-router-dom';
 
 const Width = window.innerWidth;
-const Height = window.innerHeight - 150;
+const Height = window.innerHeight;
 
-export const Sales = () => {
+export const Orders = () => {
     return (
         <React.Fragment>
             <Box

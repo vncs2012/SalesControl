@@ -2,7 +2,7 @@ from fastapi import HTTPException,status
 from db.jwttoken import create_access_token
 from db.oauth import get_current_user
 from db.hashing import Hash
-from app.model.user import insert, fetch, fetch_all, delete_user, find_user, update
+from app.model.user import insert, fetch, fetch_all, delete_user, find_user, update, fetch_filter
 
 
 def login(request):
@@ -19,9 +19,12 @@ def create_user(request):
     user_object = request
     user_object.password = hashed_pass
     retorno = insert(user_object)
-    return {"res":"created","id": retorno}
+    return {"status": 201, "id": retorno}
 
-def get_users():
+
+def get_users(username, email):
+    if username or email:
+       return fetch_filter(username, email)
     return fetch_all()
 
 
@@ -38,5 +41,4 @@ def user_update(id, request):
     if not user_object.password:
         hashed_pass = Hash.bcrypt(user_object.password)
         user_object.password = hashed_pass
-    retorno = update(user_object, id)
-    return {"status": 201, "id": retorno}
+    return update(user_object, id)

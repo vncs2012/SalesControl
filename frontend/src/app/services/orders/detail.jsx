@@ -60,7 +60,7 @@ export const Detail = ({ open, handleClose, id }) => {
             }
         };
         getUser();
-    }, []);
+    }, [id]);
     return (
         <div>
             <BootstrapDialog

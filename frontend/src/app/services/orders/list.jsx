@@ -13,7 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { deleteApi, fetch_all } from './api'
 import { useEffect, useState } from 'react';
 import { Options } from '../../layout/Options';
-import { deleteAlert } from '../../util';
+import { deleteAlert, formatDate } from '../../util';
 import { Detail } from './detail';
 import { Search } from './search';
 
@@ -82,17 +82,19 @@ export const List = () => {
                 <Table  aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell>Usuario</StyledTableCell>
-                            <StyledTableCell align="center">E-mail</StyledTableCell>
+                            <StyledTableCell>ID</StyledTableCell>
+                            <StyledTableCell>Valor</StyledTableCell>
+                            <StyledTableCell align="center">Data</StyledTableCell>
                             <StyledTableCell align="center">Opções</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {Array.isArray(data) ? data.map((row) => (
-                            <StyledTableRow key={row.id_user}>
-                                <StyledTableCell component="th" scope="row">{row.username}</StyledTableCell>
-                                <StyledTableCell align="center">{row.email}</StyledTableCell>
-                                <StyledTableCell align="center"><Options id={row.id_user} handleDelete={handleDelete} handleDetail={handleDetail} /></StyledTableCell>
+                            <StyledTableRow key={row.id_sales}>
+                                <StyledTableCell component="th" scope="row">{row.id_sales}</StyledTableCell>
+                                <StyledTableCell component="th" scope="row">{row.nu_value}</StyledTableCell>
+                                <StyledTableCell align="center">{formatDate(row.dt_sale)}</StyledTableCell>
+                                <StyledTableCell align="center"><Options id={row.id_sales} handleDelete={handleDelete} handleDetail={handleDetail} /></StyledTableCell>
                             </StyledTableRow>
                         )):'-'}
                     </TableBody>
