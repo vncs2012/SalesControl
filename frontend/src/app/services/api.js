@@ -35,6 +35,14 @@ api.interceptors.response.use(
 				}
 				break;
 			case 401:
+				switch (data.detail) {
+					case `Could not validate credentials`:
+						LogoutForce();
+						break;
+					default:
+						alertSystem(messageError, 'error');
+						break;
+				}
 				if (data.response) {
 					alertSystem(data.response, 'error');
 				}
@@ -59,6 +67,7 @@ api.interceptors.response.use(
 
 const LogoutForce = () => {
 	Cookies.remove("token")
+	window.location = '/'
 }
 
 export const _fetch_all = async (url) => {

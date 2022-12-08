@@ -10,10 +10,12 @@ import { Orders } from "../services/orders";
 import { Insert as InsertOrders } from "../services/orders/insert";
 import { List as ListOrders} from "../services/orders/list";
 import { Update as UpdateOrders } from "../services/orders/update";
+import { Dashboard } from "./Dashboard";
 
 export const Routers = () => {
   return (
     <Routes>
+      <Route path="/" element={<Dashboard />}/>
       <Route path="user/" element={<User />}>
         <Route index element={<ListUser />} />
         <Route path="add" element={<InsertUser />} />
