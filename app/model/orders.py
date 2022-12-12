@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, Boolean, Numeric, TIMESTAMP
+from sqlalchemy import Column, Integer, Boolean, Numeric, TIMESTAMP, Date, cast
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import func
 from db.connection import DBConnectionHandler
 from pydantic import BaseModel
 import datetime
@@ -74,3 +75,23 @@ def find(id: int) -> Sales:
 def fetch_filter(username, email) -> Sales:
     with DBConnectionHandler() as db:
        ...
+
+def get_day_sale():
+    with DBConnectionHandler() as db:
+        today = datetime.date.today()
+        day = db.session.query(func.sum(Sales.nu_value).label("total")).filter(cast(Sales.dt_sale,Date) == today).first()
+    return {'total':day.total,'date':today}
+
+def get_week_sale():
+    with DBConnectionHandler() as db:
+        week_today = (datetime.date.today() - datetime.timedelta(days=7))
+        today = datetime.date.today()
+        week = db.session.query(func.sum(Sales.nu_value).label("total")).filter(cast(Sales.dt_sale,Date) >= week_today,cast(Sales.dt_sale,Date) <= today).first()
+    return {'total':week.total}
+
+def get_month_sale():
+    with DBConnectionHandler() as db:
+        month_today = (datetime.date.today() - datetime.timedelta(days=30))
+        today = datetime.date.today()
+        month_today = db.session.query(func.sum(Sales.nu_value).label("total")).filter(cast(Sales.dt_sale,Date) >= month_today,cast(Sales.dt_sale,Date) <= today).first()
+    return {'total':month_today.total}

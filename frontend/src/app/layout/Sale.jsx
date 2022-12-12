@@ -22,7 +22,7 @@ export const Sale = ({ dados, title }) => {
     <Paper elevation={3} sx={{ p: 1, width: '95%', marginBottom: 2, marginTop: 2, marginLeft: 1, marginRight: 4 }}>
       <Title>{title}</Title>
       <Typography component="p" variant="h4">
-        R${data.total > 0 ? data.total.toString().replace('.', ',') : "0"}
+        R$ {data.total > 0 ? data.total.toString().replace('.', ',') : "0"}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         {data.date ? formatDate(data.date) : '-'}

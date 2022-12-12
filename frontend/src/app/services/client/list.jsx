@@ -8,15 +8,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
-import { Fab, Grid } from '@mui/material';
+import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { deleteApi, fetch_all } from './api'
 import { useEffect, useState } from 'react';
 import { Options } from '../../layout/Options';
-import { deleteAlert, formatDate } from '../../util';
+import { deleteAlert } from '../../util';
 import { Detail } from './detail';
 import { Search } from './search';
-import { Sale } from '../../layout/Sale';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -60,7 +59,7 @@ export const List = () => {
     }, []);
 
     const handleDelete = (id) => {
-        deleteAlert(deleteApi, id, setData, data, 'id_sales')
+        deleteAlert(deleteApi, id, setData, data, 'id_user')
     }
 
     const handleDetail = (id) => {
@@ -70,6 +69,7 @@ export const List = () => {
     const handleClose = () => {
         setOpen(false);
     };
+
     return (
         <>
             <Link to="add" >
@@ -77,34 +77,26 @@ export const List = () => {
                     <AddIcon />
                 </Fab>
             </Link>
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ top: 2, left: 15 }}>
-                <Grid item xs={4}>
-                    <Sale dados={data.day ?? []} title={'DIA'} />
-                </Grid>
-                <Grid item xs={4}>
-                    <Sale title={'SEMANA (Ultimos 7 Dias)'} dados={data.week ?? []} />
-                </Grid>
-                <Grid item xs={4}>
-                    <Sale title={'MES (Ultimos 30 dias)'} dados={data.month ?? []} />
-                </Grid>
-            </Grid>
+            <Search setData={setData} />
             <TableContainer component={Paper} sx={{ minWidth: 700, width: 1000 }}>
                 <Table  aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell>ID</StyledTableCell>
-                            <StyledTableCell>Valor</StyledTableCell>
-                            <StyledTableCell align="center">Data</StyledTableCell>
+                            <StyledTableCell>Nome</StyledTableCell>
+                            <StyledTableCell align="center">Documento</StyledTableCell>
+                            <StyledTableCell align="center">Sexo</StyledTableCell>
+                            <StyledTableCell align="center">Telefone</StyledTableCell>
                             <StyledTableCell align="center">Opções</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {Array.isArray(data.list) ? data.list.map((row) => (
-                            <StyledTableRow key={row.id_sales}>
-                                <StyledTableCell component="th" scope="row">{row.id_sales}</StyledTableCell>
-                                <StyledTableCell component="th" scope="row">{row.nu_value}</StyledTableCell>
-                                <StyledTableCell align="center">{formatDate(row.dt_sale)}</StyledTableCell>
-                                <StyledTableCell align="center"><Options id={row.id_sales} handleDelete={handleDelete} handleDetail={handleDetail} /></StyledTableCell>
+                        {Array.isArray(data) ? data.map((row) => (
+                            <StyledTableRow key={row.id_client}>
+                                <StyledTableCell component="th" scope="row">{row.no_client}</StyledTableCell>
+                                <StyledTableCell align="center">{row.nu_document}</StyledTableCell>
+                                <StyledTableCell align="center">{row.tp_sex}</StyledTableCell>
+                                <StyledTableCell align="center">{row.nu_contact}</StyledTableCell>
+                                <StyledTableCell align="center"><Options id={row.id_client} handleDelete={handleDelete} handleDetail={handleDetail} /></StyledTableCell>
                             </StyledTableRow>
                         )):'-'}
                     </TableBody>

@@ -1,7 +1,7 @@
 import React from 'react'
 import Swal from 'sweetalert2'
 import { NumericFormat } from 'react-number-format';
-import { format } from 'date-fns'
+import { IMaskInput } from 'react-imask';
 
 export const showLoading = (title = 'Salvando Aguarde...') => {
     Swal.fire({
@@ -102,3 +102,46 @@ export const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(p
         />
     );
 });
+
+export const FormatContact = React.forwardRef(function FormatContact(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+        <IMaskInput
+            {...other}
+            mask="(00) 0 0000-0000"
+            definitions={{
+                '#': /[1-9]/,
+            }}
+            inputRef={ref}
+            onAccept={(value) => onChange({ target: { name: props.name, value } })}
+            overwrite
+        />
+    );
+});
+
+export const FormatDocumentCpf = React.forwardRef(function FormatDocumentCpf(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+      <IMaskInput
+        {...other}
+        mask="000.000.000-00"
+        definitions={{
+          '#': /[1-9]/,
+        }}
+        inputRef={ref}
+        onAccept={(value) => onChange({ target: { name: props.name, value } })}
+        overwrite
+      />
+    );
+  });
+
+export const tpSex = [
+    {
+        value: 'M',
+        label: 'Masculino',
+    },
+    {
+        value: 'F',
+        label: 'Feminino',
+    },
+];

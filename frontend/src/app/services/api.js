@@ -15,7 +15,7 @@ api.interceptors.response.use(
 	response => response,
 	error => {
 		const { status, data } = error.response;
-		const messageError = data.error === undefined ? data.response : data.error;
+		const messageError = data.error === undefined ? data : data.error;
 
 		switch (status) {
 			case 500:
@@ -39,7 +39,11 @@ api.interceptors.response.use(
 					case `Could not validate credentials`:
 						LogoutForce();
 						break;
+					case 'Not authenticated':
+						LogoutForce();
+						break;
 					default:
+						LogoutForce();
 						alertSystem(messageError, 'error');
 						break;
 				}

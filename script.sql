@@ -6,10 +6,11 @@ create table sales.user(
     password text not null,
     email text null
 );
+ALTER TABLE sales.sales ALTER COLUMN nu_value TYPE numeric USING nu_value::numeric;
 
 create table sales.sales(
     id_sales serial4 not null primary key,
-    nu_value NUMBER(6, 4) NOT null default 0.00,
+    nu_value numeric NOT null default 0.00,
     dt_sale timestamp default now(),
     nu_portion integer null,
     id_user integer not null,
@@ -29,11 +30,11 @@ create table sales.installment(
 create schema client;
 
 create table client.client(
-    id_cliente serial not null primary key,
-    no_cliente text not null,
-    dt_birth date not null,
-    tp_sex bchar(2) not null,
-    nu_document text not null unique,
+    id_client serial not null primary key,
+    no_client text not null,
+    dt_birth date null,
+    tp_sex bpchar(1) not null,
+    nu_document text null,
     nu_contact text null,
     id_schooling integer null,
     email text null,

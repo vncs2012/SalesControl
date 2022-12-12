@@ -1,15 +1,17 @@
 from db.hashing import Hash
-from app.model.orders import insert, fetch_all, delete, find, update, fetch_filter
+from app.model.orders import insert, fetch_all, delete, find, update, fetch_filter, get_day_sale, get_week_sale, get_month_sale
 from app.model import user
 
 
-def get_all(username, email):
-    if username or email:
-       return fetch_filter(username, email)
-    return fetch_all()
+def get_all():
+    list = fetch_all()
+    day = get_day_sale()
+    week = get_week_sale()
+    month = get_month_sale()
+    return {'list': list, 'day': day, 'week': week, 'month': month}
 
-def insert_controller(request,authorization):
-    print('insert_controller',request)
+
+def insert_controller(request, authorization):
     username = user.get_user(authorization)
     return insert(request,username)
 
