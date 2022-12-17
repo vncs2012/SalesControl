@@ -51,12 +51,15 @@ BootstrapDialogTitle.propTypes = {
 };
 
 export const Detail = ({ open, handleClose, id }) => {
-    const [data, setData] = useState({ id_user: '', email: '', password: '', username: '', });
+    const [data, setData] = useState({
+        email: '', tp_sex: '', no_client: '',
+        nu_document: '', nu_contact: '', address: '',
+    });
     useEffect(() => {
         const getUser = async () => {
-            let user = await find(id)
-            if (user) {
-                setData({ ...user });
+            let cliente = await find(id)
+            if (cliente) {
+                setData({ ...cliente });
             }
         };
         getUser();
@@ -70,17 +73,20 @@ export const Detail = ({ open, handleClose, id }) => {
                 sx={{ minWidth: 752, minHeight: 480 }}
             >
                 <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-                    Detalhar Usuario
+                    Detalhar Cliente
                 </BootstrapDialogTitle>
                 <DialogContent dividers sx={{ minWidth: 600, minHeight: 480 }}>
                     <Typography variant="h5" gutterBottom>
-                        <strong>Usuario:</strong>{data.username}
+                        <strong>Nome:</strong>{data.no_client}
                     </Typography>
                     <Typography variant="h5" gutterBottom>
-                        <strong>E-mail:</strong>{data.email}
+                        <strong>Dcumento:</strong>{data.nu_document}
+                    </Typography>          
+                    <Typography variant="h5" gutterBottom>
+                        <strong>Contato:</strong>{data.nu_contact}
                     </Typography>
                     <Typography variant="h5" gutterBottom>
-                        <strong>Senha:</strong>*******
+                        <strong>Endereço:</strong>{data.address}
                     </Typography>
                 </DialogContent>
                 <DialogActions>

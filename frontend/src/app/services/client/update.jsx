@@ -1,21 +1,35 @@
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, Grid, Paper } from '@mui/material';
+import { Button, FormControl, Grid, Input, InputLabel, MenuItem, Paper } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { find, update as updateApi } from './api';
 import { Navigate, useParams } from 'react-router-dom';
-import { hideLoading } from '../../util';
+import { hideLoading, FormatDocumentCpf,FormatContact, tpSex} from '../../util';
+import PropTypes from 'prop-types';
+
+
+FormatContact.propTypes = {
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+};
+FormatDocumentCpf.propTypes = {
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+};
 
 export const Update = () => {
-    const [form, setForm] = useState({ email: '', password: '', username: '', });
+    const [form, setForm] = useState({
+        email: '', tp_sex: '', no_client: '',
+        nu_document: '', nu_contact: '', address: '',
+    });
     const [update, setUpdate] = useState(false)
     const { id } = useParams();
 
     const handleChange = (event) => {
         setForm({
             ...form,
-            [event.target.id]: event.target.value,
+            [event.target.id ?? event.target.name]: event.target.value,
         });
     };
 
@@ -47,28 +61,71 @@ export const Update = () => {
                 noValidate>
                 <Grid container spacing={2}>
                     <Grid item xs={6} md={6}>
-                        <TextField id="username" label="Usuario" type="text"
-                            placeholder="Digite nome do Usuario." variant="standard" value={form.username ?? ''}
+                        <TextField id="no_client" label="Cliente" type="text"
+                            placeholder="Digite nome do Cliente." variant="standard" value={form.no_client ?? ''}
                             onChange={handleChange}
                         />
                     </Grid>
                     <Grid item xs={6} md={6}>
+                        <FormControl variant="standard" sx={{ width: '96%', marginTop: 1 }}>
+                            <InputLabel htmlFor="nu_document">Cpf</InputLabel>
+                            <Input
+                                value={form.nu_document ?? ''}
+                                onChange={handleChange}
+                                placeholder="Digite o Cpf"
+                                name="nu_document"
+                                id="nu_document"
+                                inputComponent={FormatDocumentCpf}
+                            />
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={6} md={6}>
                         <TextField
-                            id="password"
-                            label="Password"
-                            type="password"
-                            autoComplete="current-password"
-                            variant="standard"
-                            placeholder="Preencha apenas se quiser mudar de senha!"
-                            value={form.password ?? ""}
+                            id="tp_sex"
+                            name='tp_sex'
+                            select
+                            label="Sexo"
+                            value={form.tp_sex ?? ''}
                             onChange={handleChange}
-                        />
+                            variant="standard"
+                        >
+                            {tpSex.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={6} md={6}>
+                        <FormControl variant="standard" sx={{ width: '96%', marginTop: 1 }}>
+                            <InputLabel htmlFor="nu_contact">Telefone</InputLabel>
+                            <Input
+                                value={form.nu_contact ?? ''}
+                                onChange={handleChange}
+                                name="nu_contact"
+                                id="nu_contact"
+                                inputComponent={FormatContact}
+                            />
+                        </FormControl>
                     </Grid>
                     <Grid item xs={6} md={6}>
                         <TextField id="email" label="E-mail" type="text"
                             placeholder="Digite o e-mail." variant="standard"
                             value={form.email ?? ''}
                             onChange={handleChange}
+                        />
+                    </Grid>
+                </Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs={6} md={6}>
+                        <TextField
+                            id="address"
+                            label="Endereço"
+                            onChange={handleChange}
+                            multiline
+                            rows={2}
+                            defaultValue={form.address ?? ''}
+                            variant="standard"
                         />
                     </Grid>
                 </Grid>
@@ -84,7 +141,7 @@ export const Update = () => {
                 </Grid>
             </Box>
             {update && (
-                <Navigate to="/user" replace={true} />
+                <Navigate to="/client" replace={true} />
             )}
         </Paper>
     );

@@ -1,18 +1,24 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { Button, Grid, Paper } from '@mui/material';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { fetch_all, search } from './api';
-import { hideLoading, showLoading } from '../../util';
+import TextField from '@mui/material/TextField';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { hideLoading, showLoading, FormatDocumentCpf } from '../../util';
+import { Button, FormControl, Grid, Input, InputLabel, Paper } from '@mui/material';
 
+
+FormatDocumentCpf.propTypes = {
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+};
 export const Search = ({ setData }) => {
-    const [form, setForm] = useState({ email: '', username: '', });
+    const [form, setForm] = useState({ nu_document: '', no_client: '', });
 
     const handleChange = (event) => {
         setForm({
             ...form,
-            [event.target.id]: event.target.value,
+            [event.target.id?? event.target.name]: event.target.value,
         });
     };
 
@@ -47,17 +53,23 @@ export const Search = ({ setData }) => {
                 noValidate>
                 <Grid container spacing={2}>
                     <Grid item xs={6} md={6}>
-                        <TextField id="username" label="Usuario" type="text"
-                            placeholder="Digite nome do Usuario." variant="standard" value={form.username ?? ''}
+                        <TextField id="no_client" label="Cliente" type="text"
+                            placeholder="Digite nome do Cliente." variant="standard" value={form.no_client ?? ''}
                             onChange={handleChange}
                         />
                     </Grid>
                     <Grid item xs={6} md={6}>
-                        <TextField id="email" label="E-mail" type="text"
-                            placeholder="Digite o e-mail." variant="standard"
-                            value={form.email ?? ''}
-                            onChange={handleChange}
-                        />
+                        <FormControl variant="standard" sx={{ width: '96%', marginTop: 1 }}>
+                            <InputLabel htmlFor="nu_document">Cpf</InputLabel>
+                            <Input
+                                value={form.nu_document ?? ''}
+                                onChange={handleChange}
+                                placeholder="Digite o Cpf"
+                                name="nu_document"
+                                id="nu_document"
+                                inputComponent={FormatDocumentCpf}
+                            />
+                        </FormControl>
                     </Grid>
                 </Grid>
                 <Grid

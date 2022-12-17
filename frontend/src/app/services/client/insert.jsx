@@ -33,11 +33,10 @@ export const Insert = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(form)
-        // showLoading()
+        showLoading()
         const { data } = await insert(form)
         if (data.status === 201) {
-            // hideLoading()
+            hideLoading()
             alertSucesso(true, setSave, true)
         }
     }
@@ -132,7 +131,7 @@ export const Insert = () => {
                 </Grid>
             </Box>
             {save && (
-                <Navigate to="/user" replace={true} />
+                <Navigate to="/client" replace={true} />
             )}
         </Paper>
     );

@@ -6,7 +6,9 @@ from app.model.client import Client_schema
 router = APIRouter(prefix="/client",tags=["client"],)
 
 @router.get('')
-def fetch_all_search(username: str = None,email: str = None):
+def fetch_all_search(nu_document: str = None,no_client: str = None):
+    if(nu_document or no_client):
+        return controller.get_search(nu_document,no_client)
     return controller.get_all()
 
 @router.post('')

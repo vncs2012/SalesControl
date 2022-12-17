@@ -7,12 +7,12 @@ Base = declarative_base()
 
 
 class Client_schema(BaseModel):
-    no_client: str
-    tp_sex: str
-    nu_document: str
-    email: str
-    nu_contact: str
-    address: str
+    no_client: str = None
+    tp_sex: str = None
+    nu_document: str = None
+    email: str = None
+    nu_contact: str = None
+    address: str = None
 
 
 class Client(Base):
@@ -28,7 +28,6 @@ class Client(Base):
 
 
 def insert(data) -> int:
-    print(data)
     with DBConnectionHandler() as db:
         client = Client(
             no_client=data.no_client,
@@ -89,6 +88,13 @@ def find(id: int) -> Client:
     return {'status': 404, 'message': 'Usuario não encontrado...'}
 
 
-def fetch_filter(username, email) -> Client:
+def fetch_filter(request: Client_schema) -> Client:
     with DBConnectionHandler() as db:
-       ...
+        if request.nu_document and request.no_client:
+            return db.session.query(Client).filter(Client.no_client.ilike(f'%{request.no_client}%'), Client.nu_document == request.nu_document).all()
+
+        if request.no_client:
+            return db.session.query(Client).filter(Client.no_client.ilike(f'%{request.no_client}%')).all()
+
+        if request.nu_document:
+            return db.session.query(Client).filter(Client.nu_document == request.nu_document).all()
