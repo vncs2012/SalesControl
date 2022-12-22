@@ -1,10 +1,8 @@
 from db.hashing import Hash
-from app.model.client import insert, fetch_all, delete, find, update, fetch_filter, Client_schema
-
+from app.model.client import insert, fetch_all, delete, find, update, fetch_filter,get_select, Client_schema
 
 def get_all():
     return fetch_all()
-
 
 def get_search(nu_document, no_client):
     request = Client_schema(nu_document=nu_document, no_client=no_client)
@@ -21,3 +19,6 @@ def find_controller(id:int):
 
 def update_controller(id, request):
     return update(request, id)
+
+def select_controller():
+    return get_select()

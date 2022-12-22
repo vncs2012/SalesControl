@@ -98,3 +98,6 @@ def fetch_filter(request: Client_schema) -> Client:
 
         if request.nu_document:
             return db.session.query(Client).filter(Client.nu_document == request.nu_document).all()
+
+def get_select() -> Client :
+    return fetch_all()

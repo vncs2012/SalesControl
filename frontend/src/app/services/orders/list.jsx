@@ -93,6 +93,7 @@ export const List = () => {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>ID</StyledTableCell>
+                            <StyledTableCell  align="center">Client</StyledTableCell>
                             <StyledTableCell>Valor</StyledTableCell>
                             <StyledTableCell align="center">Data</StyledTableCell>
                             <StyledTableCell align="center">Opções</StyledTableCell>
@@ -100,11 +101,12 @@ export const List = () => {
                     </TableHead>
                     <TableBody>
                         {Array.isArray(data.list) ? data.list.map((row) => (
-                            <StyledTableRow key={row.id_sales}>
-                                <StyledTableCell component="th" scope="row">{row.id_sales}</StyledTableCell>
-                                <StyledTableCell component="th" scope="row">{row.nu_value}</StyledTableCell>
-                                <StyledTableCell align="center">{formatDate(row.dt_sale)}</StyledTableCell>
-                                <StyledTableCell align="center"><Options id={row.id_sales} handleDelete={handleDelete} handleDetail={handleDetail} /></StyledTableCell>
+                            <StyledTableRow key={row.Sales.id_sales}>
+                                <StyledTableCell component="th" scope="row">{row.Sales.id_sales}</StyledTableCell>
+                                <StyledTableCell align="center"  component="th" scope="row">{row.Client ? row.Client.no_client : '-'}</StyledTableCell>
+                                <StyledTableCell component="th" scope="row">{row.Sales.nu_value}</StyledTableCell>
+                                <StyledTableCell align="center">{formatDate(row.Sales.dt_sale)}</StyledTableCell>
+                                <StyledTableCell align="center"><Options id={row.Sales.id_sales} handleDelete={handleDelete} handleDetail={handleDetail} /></StyledTableCell>
                             </StyledTableRow>
                         )):'-'}
                     </TableBody>

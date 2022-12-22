@@ -24,3 +24,7 @@ export const update = async (id, form, func) => {
 export const search = async (form) => {
     return await _search(url, form)
 }
+
+export const get_select = async (url) =>{
+    return await _fetch_all(url)
+}

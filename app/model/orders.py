@@ -3,12 +3,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from db.connection import DBConnectionHandler
 from pydantic import BaseModel
+from app.model.client import Client,fetch_all as fetch_all_client
 import datetime
 
 Base = declarative_base()
 class Orders_schema(BaseModel):
     nu_value: float
-
+    id_client: int = None
 
 class Sales(Base):
     __tablename__ = 'sales'
@@ -19,6 +20,7 @@ class Sales(Base):
     nu_portion = Column(Integer)
     id_user = Column(Integer)
     bo_paid = Column(Boolean)
+    id_client = Column(Integer)
 
 
 def insert(data, id_user) -> int:
@@ -27,7 +29,9 @@ def insert(data, id_user) -> int:
         sales = Sales(
             nu_value=data.nu_value,
             dt_sale=str(datetime.datetime.now()),
-            id_user=id_user)
+            id_user=id_user,
+            id_client=data.id_client,
+            )
         db.save(sales)
     return {"status": 201, "id": sales.id_sales}
 
@@ -50,7 +54,7 @@ def fetch(data) -> Sales:
  
 def fetch_all() -> Sales:
     with DBConnectionHandler() as db:
-        registros = db.session.query(Sales).order_by(Sales.id_sales).all()
+        registros = db.session.query(Sales,Client).join(Client,Client.id_client==Sales.id_client,isouter = True).order_by(Sales.id_sales).all()
     return registros
 
 
