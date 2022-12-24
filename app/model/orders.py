@@ -24,7 +24,6 @@ class Sales(Base):
 
 
 def insert(data, id_user) -> int:
-    print('insert',data)
     with DBConnectionHandler() as db:
         sales = Sales(
             nu_value=data.nu_value,
@@ -35,7 +34,6 @@ def insert(data, id_user) -> int:
         db.save(sales)
     return {"status": 201, "id": sales.id_sales}
 
-
 def update(data, id) -> int:
     with DBConnectionHandler() as db:
         user = db.session.query(Sales).filter(Sales.id_sales == id).first()
@@ -45,7 +43,6 @@ def update(data, id) -> int:
         db.save(user)
     return {"status": 201, "id": user.id_user}
 
-
 def fetch(data) -> Sales:
     with DBConnectionHandler() as db:
         user = db.session.query(Sales).filter(
@@ -54,9 +51,8 @@ def fetch(data) -> Sales:
  
 def fetch_all() -> Sales:
     with DBConnectionHandler() as db:
-        registros = db.session.query(Sales,Client).join(Client,Client.id_client==Sales.id_client,isouter = True).order_by(Sales.id_sales).all()
+        registros = db.session.query(Sales,Client).join(Client,Client.id_client==Sales.id_client,isouter = True).order_by(Sales.id_sales.desc()).limit(5).all()
     return registros
-
 
 def delete(id: int) -> dict:
     with DBConnectionHandler() as db:
@@ -67,7 +63,6 @@ def delete(id: int) -> dict:
             return {'status': 200}
         except:
             return {'status': 404, 'message': 'Erro ao tentar Deletar'}
-
 
 def find(id: int) -> Sales:
     with DBConnectionHandler() as db:
