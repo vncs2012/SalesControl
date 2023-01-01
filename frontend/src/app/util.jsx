@@ -2,6 +2,7 @@ import React from 'react'
 import Swal from 'sweetalert2'
 import { NumericFormat } from 'react-number-format';
 import { IMaskInput } from 'react-imask';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 
 export const showLoading = (title = 'Salvando Aguarde...') => {
     Swal.fire({
@@ -145,3 +146,13 @@ export const tpSex = [
         label: 'Feminino',
     },
 ];
+
+export const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.custom.dark,
+        color: theme.palette.custom.contrastText,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));

@@ -9,23 +9,42 @@ import './HomeStyle.css';
 import { Copyright } from './layout/Copyright';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { Routers } from './layout/Router';
+import * as locales from '@mui/material/locale';
+import { purple } from '@mui/material/colors';
 
-const darkTheme = createTheme({
-    // palette: {
-    //   mode: 'dark',
-    //   primary: {
-    //     main: '#1976d2',
-    //   },
-    // },
-});
 export const Home = () => {
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const toggleDrawer = () => {
         setOpen(!open);
     };
+    const theme = {
+        palette: {
+          primary: {
+            main: purple[500],
+          },
+          secondary: {
+            light: '#0066ff',
+            main: '#0044ff',
+            contrastText: '#ffcc00',
+          },
+          custom: {
+            light: '#ffa726',
+            main: '#f57c00',
+            dark: '#ef6c00',
+            contrastText: 'rgba(0, 0, 0, 0.87)',
+          },
+          contrastThreshold: 3,
+          tonalOffset: 0.2,
+        },
+      }
+
+    const themeWithLocale = React.useMemo(
+      () => createTheme(theme, locales['ptBR']),
+      [theme],
+    );
 
     return (
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider theme={themeWithLocale}>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <Menu open={open} handleDrawerOpen={toggleDrawer} />

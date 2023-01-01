@@ -51,7 +51,7 @@ def fetch(data) -> Sales:
  
 def fetch_all() -> Sales:
     with DBConnectionHandler() as db:
-        registros = db.session.query(Sales,Client).join(Client,Client.id_client==Sales.id_client,isouter = True).order_by(Sales.id_sales.desc()).limit(5).all()
+        registros = db.session.query(Sales,Client).join(Client,Client.id_client==Sales.id_client,isouter = True).order_by(Sales.id_sales.desc()).limit(100).all()
     return registros
 
 def delete(id: int) -> dict:
