@@ -1,8 +1,10 @@
 import React from 'react'
 import Swal from 'sweetalert2'
+import { styled } from '@mui/material/styles';
 import { NumericFormat } from 'react-number-format';
 import { IMaskInput } from 'react-imask';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import { TableRow } from '@mui/material';
 
 export const showLoading = (title = 'Salvando Aguarde...') => {
     Swal.fire({
@@ -32,10 +34,6 @@ export const alertSucesso = (boFunc, func = null, boUpdate = false) => {
         timerProgressBar: true,
         didOpen: () => {
             Swal.showLoading()
-            const b = Swal.getHtmlContainer().querySelector('b')
-            timerInterval = setInterval(() => {
-                b.textContent = Swal.getTimerLeft()
-            }, 100)
         },
         willClose: () => {
             clearInterval(timerInterval)
@@ -156,3 +154,9 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
         fontSize: 14,
     },
 }));
+
+export const NotData = (span = 5) => {
+    return (<TableRow key={1}>
+        <TableCell key={1} colSpan={span} sx={{ textAlign: 'center' }}>Nenhum dado encontrado...</TableCell>
+    </TableRow>)
+}

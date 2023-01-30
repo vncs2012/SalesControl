@@ -45,13 +45,12 @@ def update(data, id) -> int:
 
 def fetch(data) -> Sales:
     with DBConnectionHandler() as db:
-        user = db.session.query(Sales).filter(
-            Sales.username == data.username).first()
+        user = db.session.query(Sales).filter(Sales.username == data.username).first()
     return user
  
 def fetch_all() -> Sales:
     with DBConnectionHandler() as db:
-        registros = db.session.query(Sales,Client).join(Client,Client.id_client==Sales.id_client,isouter = True).order_by(Sales.id_sales.desc()).limit(100).all()
+        registros = db.session.query(Sales, Client).join( Client, Client.id_client == Sales.id_client, isouter=True).order_by(Sales.id_sales.desc()).limit(100).all()
     return registros
 
 def delete(id: int) -> dict:
@@ -66,14 +65,10 @@ def delete(id: int) -> dict:
 
 def find(id: int) -> Sales:
     with DBConnectionHandler() as db:
-        registro = db.session.query(Sales).filter(Sales.id_sales == id).first()
+        registro = db.session.query(Sales, Client).join( Client, Client.id_client == Sales.id_client, isouter=True).filter(Sales.id_sales == id).first()
         if registro:
             return {'status': 200, 'register': registro}
-    return {'status': 404, 'message': 'Usuario não encontrado...'}
-
-def fetch_filter(username, email) -> Sales:
-    with DBConnectionHandler() as db:
-       ...
+    return {'status': 404, 'message': 'Compra não encontrado...'}
 
 def get_day_sale():
     with DBConnectionHandler() as db:

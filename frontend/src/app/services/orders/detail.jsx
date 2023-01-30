@@ -11,6 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect } from 'react';
 import { find } from './api';
 import { Typography } from '@mui/material';
+import { formatDate } from '../../util';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -51,15 +52,15 @@ BootstrapDialogTitle.propTypes = {
 };
 
 export const Detail = ({ open, handleClose, id }) => {
-    const [data, setData] = useState({ id_user: '', email: '', password: '', username: '', });
+    const [data, setData] = useState({});
     useEffect(() => {
-        const getUser = async () => {
-            let user = await find(id)
-            if (user) {
-                setData({ ...user });
+        const getOrders = async () => {
+            let dataApi = await find(id)
+            if (dataApi) {
+                setData({ ...dataApi });
             }
         };
-        getUser();
+        getOrders();
     }, [id]);
     return (
         <div>
@@ -70,18 +71,28 @@ export const Detail = ({ open, handleClose, id }) => {
                 sx={{ minWidth: 752, minHeight: 480 }}
             >
                 <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-                    Detalhar Usuario
+                    Detalhar Venda
                 </BootstrapDialogTitle>
                 <DialogContent dividers sx={{ minWidth: 600, minHeight: 480 }}>
-                    <Typography variant="h5" gutterBottom>
-                        <strong>Usuario:</strong>{data.username}
-                    </Typography>
-                    <Typography variant="h5" gutterBottom>
-                        <strong>E-mail:</strong>{data.email}
-                    </Typography>
-                    <Typography variant="h5" gutterBottom>
-                        <strong>Senha:</strong>*******
-                    </Typography>
+                    {Object.keys(data).length > 0 ? (
+                        <>
+                            <Typography variant="h5" gutterBottom>
+                                        <strong>Cliente: </strong>{ data.Client.no_client ?? 'Não Identificado'}
+                            </Typography>
+                            <Typography variant="h5" gutterBottom>
+                                <strong>Valor Compra: </strong>R$ {data.Sales.nu_value ?? 0.00}
+                            </Typography>
+                            <Typography variant="h5" gutterBottom>
+                                <strong>Data Compra: </strong>{formatDate(data.Sales.dt_sale) }
+                            </Typography>
+                            <Typography variant="h5" gutterBottom>
+                                <strong>Contato: </strong>{data.Client.nu_contact}
+                            </Typography>
+                            <Typography variant="h5" gutterBottom>
+                                <strong>Endereço: </strong>{data.Client.address}
+                            </Typography>
+                        </>
+                    ) : ''}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>

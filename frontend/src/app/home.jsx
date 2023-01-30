@@ -10,33 +10,33 @@ import { Copyright } from './layout/Copyright';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { Routers } from './layout/Router';
 import * as locales from '@mui/material/locale';
-import { purple } from '@mui/material/colors';
 
 export const Home = () => {
     const [open, setOpen] = React.useState(false);
     const toggleDrawer = () => {
         setOpen(!open);
     };
-    const theme = {
-        palette: {
-          primary: {
-            main: purple[500],
-          },
-          secondary: {
-            light: '#0066ff',
-            main: '#0044ff',
-            contrastText: '#ffcc00',
-          },
-          custom: {
-            light: '#ffa726',
-            main: '#f57c00',
-            dark: '#ef6c00',
-            contrastText: 'rgba(0, 0, 0, 0.87)',
-          },
-          contrastThreshold: 3,
-          tonalOffset: 0.2,
+    
+    const theme = createTheme({
+      palette: {
+        primary: {
+          main: '#ff4400',
         },
-      }
+        secondary: {
+          light: '#0066ff',
+          main: '#0044ff',
+          contrastText: '#ffcc00',
+        },
+        custom: {
+          light: '#ffa726',
+          main: '#f57c00',
+          dark: '#ef6c00',
+          contrastText: 'rgba(0, 0, 0, 0.87)',
+        },
+        contrastThreshold: 3,
+        tonalOffset: 0.2,
+      },
+    });
 
     const themeWithLocale = React.useMemo(
       () => createTheme(theme, locales['ptBR']),

@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -13,35 +11,15 @@ import AddIcon from '@mui/icons-material/Add';
 import { deleteApi, fetch_all } from './api'
 import { useEffect, useState } from 'react';
 import { Options } from '../../layout/Options';
-import { deleteAlert } from '../../util';
+import { deleteAlert, NotData, StyledTableCell } from '../../util';
 import { Detail } from './detail';
 import { Search } from './search';
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: '#1976D2',
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
 
 const fabStyle = {
     position: 'fixed',
     bottom: 16,
     right: 16,
 };
-
 
 export const List = () => {
     const [data, setData] = useState([])
@@ -89,12 +67,12 @@ export const List = () => {
                     </TableHead>
                     <TableBody>
                         {Array.isArray(data) ? data.map((row) => (
-                            <StyledTableRow key={row.id_user}>
+                            <TableRow hover key={row.id_user}>
                                 <StyledTableCell component="th" scope="row">{row.username}</StyledTableCell>
                                 <StyledTableCell align="center">{row.email}</StyledTableCell>
                                 <StyledTableCell align="center"><Options id={row.id_user} handleDelete={handleDelete} handleDetail={handleDetail} /></StyledTableCell>
-                            </StyledTableRow>
-                        )):'-'}
+                            </TableRow>
+                        )) : <NotData />}
                     </TableBody>
                 </Table>
             </TableContainer>

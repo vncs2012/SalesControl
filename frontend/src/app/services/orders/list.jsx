@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { deleteApi, fetch_all } from './api'
 import { useEffect, useState } from 'react';
 import { Options } from '../../layout/Options';
-import { deleteAlert, formatDate, StyledTableCell } from '../../util';
+import { deleteAlert, formatDate, NotData, StyledTableCell } from '../../util';
 import { Detail } from './detail';
 import { Sale } from '../../layout/Sale';
 import Table from '@mui/material/Table';
@@ -33,7 +33,9 @@ export const List = () => {
     useEffect(() => {
         const getUsers = async () => {
             let {data} = await fetch_all()
-            data ? setData(data) : null;
+            if (data) {
+                setData(data)
+            } 
         };
         getUsers();
     }, []);
@@ -81,25 +83,27 @@ export const List = () => {
                     <Table stickyHeader>
                         <TableHead >
                             <TableRow >
-                                <StyledTableCell Cellkey={'id'}>ID</StyledTableCell>
-                                <StyledTableCell Cellkey={'Client'} align={'center'} >Client</StyledTableCell>
-                                <StyledTableCell Cellkey={'Valor'} align={'center'} >Valor</StyledTableCell>
-                                <StyledTableCell Cellkey={'Data'} align={'center'} >Data</StyledTableCell>
-                                <StyledTableCell Cellkey={'Opções'} align={'center'} >Opções</StyledTableCell>
+                                <StyledTableCell >ID</StyledTableCell>
+                                <StyledTableCell align={'center'} >Client</StyledTableCell>
+                                <StyledTableCell align={'center'} >Valor</StyledTableCell>
+                                <StyledTableCell align={'center'} >Data</StyledTableCell>
+                                <StyledTableCell align={'center'} >Opções</StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {Array.isArray(data.list) ? data.list
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row) => (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id_sales}>
-                                        <TableCell key={row.Sales.id_sales} >{row.Sales.id_sales}</TableCell>
-                                        <TableCell key={row.Sales.id_sales + '_' + row.Client} align="center">{row.Client ? row.Client.no_client : '-'}</TableCell>
-                                        <TableCell key={row.Sales.id_sales + '_' + row.Sales.nu_value} align="right">{row.Sales.nu_value}</TableCell>
-                                        <TableCell key={row.Sales.id_sales + '_' + row.Sales.dt_sale} align="center">{formatDate(row.Sales.dt_sale)}</TableCell>
-                                        <TableCell key={row.Sales.id_sales + '_option'} align="center"><Options id={row.Sales.id_sales} handleDelete={handleDelete} handleDetail={handleDetail} /></TableCell>
+                                    <TableRow hover tabIndex={-1} key={row.id_sales}>
+                                        <TableCell >{row.Sales.id_sales}</TableCell>
+                                        <TableCell align="center">{row.Client ? row.Client.no_client : 'Não identificado'}</TableCell>
+                                        <TableCell align="right">{row.Sales.nu_value}</TableCell>
+                                        <TableCell align="center">{formatDate(row.Sales.dt_sale)}</TableCell>
+                                        <TableCell align="center">
+                                            <Options id={row.Sales.id_sales} handleDelete={handleDelete} handleDetail={handleDetail} />
+                                        </TableCell>
                                     </TableRow>
-                                )) : '-'}
+                                )) : <NotData />}
                         </TableBody>
                     </Table>
                 </TableContainer>

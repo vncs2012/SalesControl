@@ -1,5 +1,5 @@
 from db.hashing import Hash
-from app.model.orders import insert, fetch_all, delete, find, update, fetch_filter, get_day_sale, get_week_sale, get_month_sale
+from app.model.orders import insert, fetch_all, delete, find, update, get_day_sale, get_week_sale, get_month_sale
 from app.model import user
 
 
