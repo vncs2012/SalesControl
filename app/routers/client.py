@@ -1,9 +1,10 @@
-from app.controller import client as controller
+from app.controller.client import ControllerClient 
 from fastapi import APIRouter,Header
 from typing import List, Union
-from app.model.client import Client_schema
+from db.schema.Client import Schema_Client
 
 router = APIRouter(prefix="/client",tags=["client"],)
+controller = ControllerClient()
 
 @router.get('')
 def fetch_all_search(nu_document: str = None,no_client: str = None):
@@ -12,7 +13,7 @@ def fetch_all_search(nu_document: str = None,no_client: str = None):
     return controller.get_all()
 
 @router.post('')
-def register_orders(request:Client_schema,Authorization: Union[List[str], None] = Header(default=None)):
+def register_orders(request:Schema_Client,Authorization: Union[List[str], None] = Header(default=None)):
     return controller.insert_controller(request)
 
 @router.delete('/{id}')
@@ -24,5 +25,5 @@ def find(id: int):
     return controller.find_controller(id)
 
 @router.patch('/{id}')
-def update(id: int,request:Client_schema):
+def update(id: int,request:Schema_Client):
     return controller.update_controller(id,request)

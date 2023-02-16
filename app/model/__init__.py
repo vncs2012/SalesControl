@@ -1,2 +1,1 @@
-from app.model import user
-from app.model import orders
+from app.model import *

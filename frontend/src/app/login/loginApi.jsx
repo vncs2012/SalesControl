@@ -15,5 +15,5 @@ export const logar = async (data) => {
         .catch((error) => {
             console.log(error.message);
         });
-    return res;
+    return res; 
 }

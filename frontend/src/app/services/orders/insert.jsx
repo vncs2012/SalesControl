@@ -1,13 +1,22 @@
-import { useState } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { Autocomplete, Button, Grid, MenuItem, Paper } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import { insert, get_select } from './api';
-import { Navigate } from 'react-router-dom';
-import { alertSucesso, hideLoading, NumberFormatCustom, showLoading } from '../../util';
+import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { makeStyles } from "@mui/styles";
+import { insert, get_select } from './api';
+import TextField from '@mui/material/TextField';
+import {  Button, Grid,  Paper } from '@mui/material';
+import { alertSucesso, hideLoading, NumberFormatCustom, showLoading } from '../../util';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+      padding: theme.spacing(2),
+    },
+    textField: {
+      marginRight: theme.spacing(1),
+      width: 200,
+    },
+  }));
+
 
 NumberFormatCustom.propTypes = {
     name: PropTypes.string.isRequired,
@@ -15,9 +24,11 @@ NumberFormatCustom.propTypes = {
 };  
 
 export const Insert = () => {
-    const [form, setForm] = useState({ nu_value: '', id_client: '' });
+    const classes = useStyles();
     const [client, setClient] = useState([]);
     const [save, setSave] = useState(false)
+    const [form, setForm] = useState({ nu_value: '', id_client: '' });
+    const [customerProducts, setCustomerProducts] = useState([{ customer_id: '', product_id: '', purchase_date: '', purchase_price: '', purchase_quantity: '', },]);
 
     const handleChange = (event) => {
         setForm({
@@ -28,7 +39,7 @@ export const Insert = () => {
 
     useEffect(() => {
         const getClient = async () => {
-            let { data } = await get_select('client')
+            let { data } = await get_select_insert('client')
             if (data) {
                 setClient(data);
             }
@@ -46,59 +57,81 @@ export const Insert = () => {
         }
     }
 
-    return (
-        <Paper elevation={3} sx={{ p: 2, width: 1000 }}>
-            <Box
-                component="form"
-                sx={{
-                    '& .MuiTextField-root': { m: 1, width: '95%' },
-                }}
-                noValidate>
-                <Grid container spacing={2}>
-                    <Grid item xs={6} md={6}>
-                        <TextField
-                            label="Valor da Venda"
-                            onChange={handleChange}
-                            name="nu_value"
-                            id="nu_value"
-                            InputProps={{
-                                inputComponent: NumberFormatCustom
-                            }}
-                            variant="standard"
-                        />
-                    </Grid>
-                    <Grid item xs={6} md={6}>
-                        <Autocomplete
-                            id="id_client"
-                            onChange={(event, newValue) => {
-                                setForm({
-                                    ...form,
-                                    'id_client': newValue.id_client,
-                                });
-                            }}
-                            options={client}
-                            getOptionLabel={(option) => option.nu_document + ' - ' + option.no_client}
-                            renderInput={(params) => (
-                                <TextField {...params} label="Clientes" placeholder="Clientes"  variant="standard" />
-                              )}
-                        />
-                    </Grid>
+    const handleAddCustomerProduct = () => {
+        setCustomerProducts([
+            ...customerProducts, { customer_id: '', product_id: '', purchase_date: '', purchase_price: '', purchase_quantity: '', },
+        ]);
+    };
 
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                    >
-                        <Button onClick={handleSubmit} variant="contained" endIcon={<SendIcon />} sx={{ float: 'right', position: 'flex', width: 150 }} >
-                            Salvar
-                        </Button>
+    const handleRemoveCustomerProduct = index => {
+        setCustomerProducts(customerProducts.filter((_, i) => i !== index));
+    };
+
+    const handleInputChange = (index, event) => {
+        const values = [...customerProducts];
+        values[index][event.target.name] = event.target.value;
+        setCustomerProducts(values);
+    };
+
+    return (
+        <Paper className={classes.root}>
+            <Grid container direction="column" alignItems="center">
+                {customerProducts.map((customerProduct, index) => (
+                    <Grid item key={index}>
+                        <Grid container direction="row" alignItems="center">
+                            <TextField
+                                label="Customer ID"
+                                className={classes.textField}
+                                name="customer_id"
+                                value={customerProduct.customer_id}
+                                onChange={event => handleInputChange(index, event)}
+                            />
+                            <TextField
+                                label="Product ID"
+                                className={classes.textField}
+                                name="product_id"
+                                value={customerProduct.product_id}
+                                onChange={event => handleInputChange(index, event)}
+                            />
+                            <TextField
+                                label="Purchase Date"
+                                className={classes.textField}
+                                name="purchase_date"
+                                value={customerProduct.purchase_date}
+                                onChange={event => handleInputChange(index, event)}
+                            />
+                            <TextField
+                                label="Purchase Price"
+                                className={classes.textField}
+                                name="purchase_price"
+                                value={customerProduct.purchase_price}
+                                onChange={event => handleInputChange(index, event)}
+                            />
+                            <TextField
+                                label="Purchase Quantity"
+                                className={classes.textField}
+                                name="purchase_quantity"
+                                value={customerProduct.purchase_quantity}
+                                onChange={event => handleInputChange(index, event)}
+                            />
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={() => handleRemoveCustomerProduct(index)}
+                            >
+                                Remove
+                            </Button>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Box>
-            {save && (
-                <Navigate to="/orders" replace={true} />
-            )}
+                ))}
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleAddCustomerProduct}
+                >
+                    Add Customer Product
+                </Button>
+            </Grid>
         </Paper>
     );
 }

@@ -1,13 +1,18 @@
-from app.controller import orders as controller
+from app.controller.orders import ControllerOrder 
+from db.schema.Sales import schema_sales as Orders_schema
 from fastapi import APIRouter,Header
 from typing import List, Union
-from app.model.orders import Orders_schema
 
 router = APIRouter(prefix="/orders",tags=["orders"],)
+controller = ControllerOrder()
 
 @router.get('')
 def fetch_all_search(username: str = None,email: str = None):
     return controller.get_all()
+
+@router.get('/select')
+def fetch_all_search():
+    return controller.get_select()
 
 @router.post('')
 def register_orders(request:Orders_schema,Authorization: Union[List[str], None] = Header(default=None)):

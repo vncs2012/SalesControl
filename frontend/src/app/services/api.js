@@ -78,6 +78,11 @@ export const _fetch_all = async (url) => {
 	let res = await api.get(url)
 	return res;
 }
+export const _fetch_select = async (url) => {
+	let res = await api.get(url+'/select')
+	return res;
+}
+
 
 export const _insert = async (url, form) => {
 	let res = await api.post(url, { ...form });
@@ -109,7 +114,7 @@ export const _find = async (url, id, model) => {
 
 export const _update = async (url, id, form, func) => {
 	showLoading()
-	let { data } = await api.patch(`${url}/${id}`, { ...form })
+	let { data } = await api.put(`${url}/${id}`, { ...form })
 	if (data.status === 201) {
 		alertSucesso(true, func)
 	} else {

@@ -19,6 +19,11 @@ import { Insert as InsertClient } from "../services/client/insert";
 import { List as ListClient} from "../services/client/list";
 import { Update as UpdateClient } from "../services/client/update";
 
+import { Product } from "../services/product";
+import { Insert as ProductCreate } from "../services/product/insert";
+import { List as ProductList} from "../services/product/list";
+import { Update as ProductUpdate } from "../services/product/update";
+
 export const Routers = () => {
   return (
     <Routes>
@@ -27,6 +32,11 @@ export const Routers = () => {
         <Route index element={<ListUser />} />
         <Route path="add" element={<InsertUser />} />
         <Route path=":id/" element={<UpdateUser />} />
+      </Route>
+      <Route path="products/" element={<Product />}>
+        <Route index element={<ProductList />} />
+        <Route path="add" element={<ProductCreate />} />
+        <Route path=":id" element={<ProductUpdate />} />
       </Route>
       <Route path="orders/" element={<Orders />} >
         <Route index element={<ListOrders />} />

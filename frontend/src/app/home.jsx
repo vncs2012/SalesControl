@@ -5,7 +5,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { Menu } from './layout/index'
-import './HomeStyle.css';
 import { Copyright } from './layout/Copyright';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { Routers } from './layout/Router';

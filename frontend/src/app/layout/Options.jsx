@@ -8,18 +8,18 @@ import { Box, Fab } from '@mui/material';
 export const Options = ({ id, handleDelete, handleDetail }) => {
   const linkStyle = { textDecoration: 'none', color: 'inherit' }
   return (
-    <React.Fragment> 
-      <Box sx={{ '& > :not(style)': { m: 0.5 } }}>
+    <React.Fragment>
+      <Box sx={{ '& > :not(style)': { marginLeft: 1, marginBottom: 0.5, marginTop: 0.5 } }}>
         <Fab size="small" aria-label="Detail">
           <TravelExploreIcon onClick={() => handleDetail(id)} />
         </Fab>
-        <Fab size="small" aria-label="edit">
+        <Fab size='small' aria-label="edit">
           <Link to={id + '/'} style={linkStyle}>
-        <CreateOutlinedIcon />
-      </Link>
+            <CreateOutlinedIcon />
+          </Link>
         </Fab>
         <Fab size="small" aria-label="delete">
-      <CloseIcon onClick={()=>handleDelete(id)} />
+          <CloseIcon onClick={() => handleDelete(id)} />
         </Fab>
       </Box>
     </React.Fragment >

@@ -151,7 +151,10 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
         color: theme.palette.custom.contrastText,
     },
     [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
+        fontSize: 12,
+        margin:2,
+        padding: 0,
+        paddingLeft: 10
     },
 }));
 
