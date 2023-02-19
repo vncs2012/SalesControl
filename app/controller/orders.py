@@ -1,6 +1,7 @@
 from db.hashing import Hash
 from app.model.orders import Orders
 from app.model.client import Client
+from app.model.product import Product
 from app.model import user
 
 class ControllerOrder:
@@ -26,10 +27,10 @@ class ControllerOrder:
     def find_controller(self,id:int):
         return self._model.find(id)
 
-    def get_select():
+    def get_select(self) -> dict:
         client = Client()
-        product = []
-        return {'client': client.get_select(), 'product': product}
+        product = Product()
+        return {'client': client.get_select(), 'product': product.get_select()}
 
     def update_controller(self,id, request):
         user_object = request

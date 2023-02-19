@@ -1,25 +1,24 @@
 import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Link } from 'react-router-dom';
-import { Fab } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { deleteApi, fetch_all } from './api'
-import { useEffect, useState } from 'react';
-import { Options } from '../../layout/Options';
-import { deleteAlert, NotData, StyledTableCell } from '../../util';
-import { Detail } from './detail';
-import { Search } from './search';
+import { Grid } from "@mui/material";
+import { deleteApi, fetch_all } from "./api";
+import { useEffect, useState } from "react";
+import { deleteAlert } from "../../util";
+import { Detail } from "./detail";
+import { Search } from "./search";
+import { TabelaPaginada } from '../../layout/TablePagination';
 
-const fabStyle = {
-    position: 'fixed',
-    bottom: 16,
-    right: 16,
-};
+const colList = [
+  {
+    id: "id_user",
+    label: "",
+    number: false,
+    align: "center",
+    pk_visible: false,
+  },
+  { id: "username", label: "Usuario", number: false, align: "center" },
+  { id: "email", label: "E-mail", number: false, align: "center" },
+];
 
 export const List = () => {
     const [data, setData] = useState([])
@@ -49,33 +48,27 @@ export const List = () => {
     };
 
     return (
-        <>
-            <Link to="add" >
-                <Fab sx={fabStyle} aria-label='add' color='primary'>
-                    <AddIcon />
-                </Fab>
-            </Link>
-            <Search setData={setData} />
-            <TableContainer component={Paper} sx={{ minWidth: 700, width: 1000 }}>
-                <Table  aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>Usuario</StyledTableCell>
-                            <StyledTableCell align="center">E-mail</StyledTableCell>
-                            <StyledTableCell align="center">Opções</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {Array.isArray(data) ? data.map((row) => (
-                            <TableRow hover key={row.id_user}>
-                                <StyledTableCell component="th" scope="row">{row.username}</StyledTableCell>
-                                <StyledTableCell align="center">{row.email}</StyledTableCell>
-                                <StyledTableCell align="center"><Options id={row.id_user} handleDelete={handleDelete} handleDetail={handleDetail} /></StyledTableCell>
-                            </TableRow>
-                        )) : <NotData />}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            {open ? <Detail open={open} handleClose={handleClose} id={idDetail} /> : null}
-        </>)
+      <Paper sx={{ minHeight: "100%", overflow: "hidden" }}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ top: 2, left: 15 }}
+        >
+          <Search setData={setData} />
+          <Grid item xs={12}>
+            <TabelaPaginada
+              colunas={colList}
+              dados={data}
+              handleDelete={handleDelete}
+              handleDetail={handleDetail}
+            />
+          </Grid>
+        </Grid>
+        {open ? (
+          <Detail open={open} handleClose={handleClose} id={idDetail} />
+        ) : null}
+      </Paper>
+    );
 }

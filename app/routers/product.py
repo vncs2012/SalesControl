@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Header
+from fastapi import APIRouter
 from db.schema.product import Schema_Product
 from app.controller.product import ControllerProduct
 
@@ -10,8 +10,8 @@ async def read_products():
     return await controller.get_products()
 
 @router.get('/{product_id}')
-def find_products(product_id: int):
-    return controller.find(product_id)
+async def find_products(product_id: int):
+    return await controller.find_product(product_id)
 
 @router.post("")
 async def create_product_route( product: Schema_Product):

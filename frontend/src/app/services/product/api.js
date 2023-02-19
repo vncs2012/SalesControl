@@ -21,7 +21,7 @@ export const find = async (id) => {
 
 export const update = async (id, form, func) => {
     form.price = (typeof form.price == "string") ? Number(form.price.split('R$')[1]) : form.price
-    form.price_edge = (form.price_edge !== '' || typeof form.price == "string") ? Number(form.price_edge.split('R$')[1]) : 0.00
+    form.price_edge = (typeof form.price_edge == "string") ? Number(form.price_edge.split('R$')[1]) : form.price_edge
     return await _update(url, id, form, func)
 }
 

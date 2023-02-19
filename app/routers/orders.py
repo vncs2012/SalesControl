@@ -11,7 +11,7 @@ def fetch_all_search(username: str = None,email: str = None):
     return controller.get_all()
 
 @router.get('/select')
-def fetch_all_search():
+def fetch_select():
     return controller.get_select()
 
 @router.post('')

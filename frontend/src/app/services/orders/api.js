@@ -1,4 +1,4 @@
-import { _deleteApi, _fetch_all, _find, _insert, _search, _update } from '../api'
+import { _deleteApi, _fetch_all, _fetch_select, _find, _insert, _search, _update } from '../api'
 
 const url = 'orders'
 export const fetch_all = async () => {
@@ -25,6 +25,6 @@ export const search = async (form) => {
     return await _search(url, form)
 }
 
-export const get_select_insert = async (url) =>{
+export const get_select_insert = async () =>{
     return await _fetch_select(url)
 }
