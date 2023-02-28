@@ -4,8 +4,13 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from app.controller import user as UserController
 from app.controller import home as homeController
-from app.routers import user, orders, client ,product
-app = FastAPI()
+from app.routers import user, RouterOrder, client ,product
+
+app = FastAPI(
+    title="Backend Pizzaria",
+    version="0.1.0",
+    description="",
+    )
 origins = [
     "http://localhost:3000",
 ]
@@ -18,9 +23,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+orders = RouterOrder()
+app.include_router(orders.router)
 app.include_router(user.router)
-app.include_router(orders.router)
-app.include_router(orders.router)
 app.include_router(client.router)
 app.include_router(product.router)
 

@@ -9,9 +9,13 @@ import {
   Autocomplete,
   Button,
   Fab,
+  FormControl,
   FormControlLabel,
   Grid,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Typography,
 } from "@mui/material";
 import {
@@ -30,21 +34,19 @@ NumberFormatCustom.propTypes = {
 export const Insert = () => {
   const [select, setSelect] = useState([]);
   const [save, setSave] = useState(false);
-  const [form, setForm] = useState({ nu_value: "", id_client: "" });
-  const [customerProducts, setCustomerProducts] = useState([
-    {
-      customer_id: "",
-      product_id: "",
-      purchase_date: "",
-      purchase_price: "",
-      purchase_quantity: "",
-    },
-  ]);
+  const [form, setForm] = useState({
+    id_client: "",
+    delivery: false,
+    items: [ {  id_product: "",  bo_border: false,  purchase_quantity: "",  description: "",}],
+  });
 
   const handleChange = (event) => {
     setForm({
       ...form,
-      [event.target.name]: event.target.value,
+      [event.target.name]:
+        event.target.name == "delivery"
+          ? event.target.checked
+          : event.target.value,
     });
   };
 
@@ -62,6 +64,7 @@ export const Insert = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log(form);
     showLoading();
     const { data } = await insert(form);
     if (data.status === 201) {
@@ -71,60 +74,57 @@ export const Insert = () => {
   };
 
   const handleAddCustomerProduct = () => {
-    setCustomerProducts([
-      ...customerProducts,
-      {
-        customer_id: "",
-        product_id: "",
-        purchase_date: "",
-        purchase_price: "",
-        purchase_quantity: "",
-      },
-    ]);
+    const newItem ={  id_product: "",  bo_border: false,  purchase_quantity: "",  description: "",}
+    setForm({...form, items:[...form.items, newItem]})
   };
 
   const handleRemoveCustomerProduct = (index) => {
-    setCustomerProducts(customerProducts.filter((_, i) => i !== index));
+    const newItems = form.items.filter((_, i) => i !== index)
+    setForm({...form, items:newItems})
   };
 
   const handleInputChange = (index, event) => {
-    const values = [...customerProducts];
-    values[index][event.target.name] = event.target.value;
-    setCustomerProducts(values);
+    console.log(index, event);
+    form.items[index][event.target.name] =
+      event.target.name == "bo_border"
+        ? event.target.checked
+        : event.target.value;
+      setForm({...form})
   };
-
   return (
     <Paper sx={{ width: "100vh", padding: 2, marginTop: 5 }} elevation={4}>
       <Grid container direction="row" spacing={2}>
-          <Grid item xs={4} md={6}>
-            <Autocomplete
-              id="id_client"
-              onChange={(event, newValue) => {
-                setForm({
-                  ...form,
-                  id_client: newValue ? newValue.id_client : "",
-                });
-              }}
-              options={select["client"] ?? []}
-              getOptionLabel={(option) =>
-                option.nu_document + " - " + option.no_client
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Clientes"
-                  placeholder="Clientes"
-                  variant="standard"
-                />
-              )}
-            />
-            </Grid>
-            <Grid item xs={6} md={6}>
-              <FormControlLabel
-                control={<Android12Switch defaultChecked />}
-                label="Fazer entrega?"
+        <Grid item xs={4} md={6}>
+          <Autocomplete
+            id="id_client"
+            onChange={(event, newValue) => {
+              setForm({
+                ...form,
+                id_client: newValue ? newValue.id_client : "",
+              });
+            }}
+            options={select["client"] ?? []}
+            getOptionLabel={(option) =>
+              option.nu_document + " - " + option.no_client
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Clientes"
+                placeholder="Clientes"
+                variant="standard"
               />
-          </Grid>
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <FormControlLabel
+            control={<Android12Switch />}
+            label="Fazer entrega?"
+            name="delivery"
+            onChange={(event) => handleChange(event)}
+          />
+        </Grid>
         <Grid container direction="column" alignItems="center">
           <Button
             variant="contained"
@@ -135,7 +135,8 @@ export const Insert = () => {
             <ShoppingCartRoundedIcon /> Adicionar Produto
           </Button>
         </Grid>
-        {customerProducts.map((customerProduct, index) => (
+
+        {form.items.map((customerProduct, index) => (
           <Paper
             elevation={2}
             sx={{ padding: 3, marginLeft: 6, marginTop: 2, marginBottom: 2 }}
@@ -145,47 +146,49 @@ export const Insert = () => {
                 <Typography sx={{ fontSize: 14 }} gutterBottom>
                   Produto {index + 1}º
                 </Typography>
-                <Autocomplete
-                  sx={{ width: "100%" }}
-                  id="id_product"
-                  onChange={(event) => handleInputChange(index, event)}
-                  options={select["product"] ?? []}
-                  getOptionLabel={(option) => option.name}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Produto"
-                      placeholder="Produto"
-                      variant="standard"
-                    />
-                  )}
-                />
-                <FormControlLabel
-                control={<Android12Switch defaultChecked />}
-                value={customerProduct.product_id}
-                variant="standard"
-                onChange={(event) => handleInputChange(index, event)}
-                label="Borda?"
-              />
+                <FormControl fullWidth>
+                  <InputLabel id="id_product-label">Produto</InputLabel>
+                  <Select
+                    labelId="id_product-label"
+                    id="id_product"
+                    name="id_product"
+                    value={customerProduct.id_product}
+                    label="Produto"
+                    variant="standard"
+                    onChange={(event) => handleInputChange(index, event)}
+                  >
+                    {select["product"]
+                      ? select["product"].map((i) => (
+                          <MenuItem value={i.id}>{i.name}</MenuItem>
+                        ))
+                      : ""}
+                  </Select>
+                </FormControl>
+
                 <TextField
-                  label="Purchase Date"
-                  name="purchase_date"
-                  variant="standard"
-                  value={customerProduct.purchase_date}
-                  onChange={(event) => handleInputChange(index, event)}
-                />
-                <TextField
-                  label="Purchase Price"
-                  name="purchase_price"
-                  variant="standard"
-                  value={customerProduct.purchase_price}
-                  onChange={(event) => handleInputChange(index, event)}
-                />
-                <TextField
-                  label="Purchase Quantity"
+                  label="Quantidade"
                   name="purchase_quantity"
                   variant="standard"
                   value={customerProduct.purchase_quantity}
+                  onChange={(event) => handleInputChange(index, event)}
+                />
+                <FormControlLabel
+                  control={
+                    <Android12Switch checked={customerProduct.bo_border} />
+                  }
+                  value={customerProduct.bo_border}
+                  variant="standard"
+                  name="bo_border"
+                  id="bo_border"
+                  onChange={(event) => handleInputChange(index, event)}
+                  label="Borda?"
+                />
+                <TextField
+                  label="Anotação do item"
+                  name="description"
+                  variant="standard"
+                  multiline
+                  value={customerProduct.description}
                   onChange={(event) => handleInputChange(index, event)}
                 />
                 <Fab size="small" aria-label="delete" sx={{ margin: 2 }}>

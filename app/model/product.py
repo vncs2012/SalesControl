@@ -23,8 +23,8 @@ class Product:
             self.db.session.rollback()
             print("Erro ao atualizar o registro:", e)
             
-    def fetch(self,data) -> Products:
-        product = self.db.session.query(Products).filter(Products.id == data.id).first()
+    def fetch(self,id_product:int) -> Products:
+        product = self.db.session.query(Products).filter(Products.id == id_product).first()
         return product
 
     def fetch_all(self) -> Products:

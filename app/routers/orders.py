@@ -1,31 +1,38 @@
-from app.controller.orders import ControllerOrder 
+from app.controller.orders import ControllerOrder
 from db.schema.Sales import schema_sales as Orders_schema
-from fastapi import APIRouter,Header
+from fastapi import APIRouter, Header
 from typing import List, Union
+from db.interface.router import Router
 
-router = APIRouter(prefix="/orders",tags=["orders"],)
-controller = ControllerOrder()
+class RouterOrder(Router):
 
-@router.get('')
-def fetch_all_search(username: str = None,email: str = None):
-    return controller.get_all()
+    def __init__(self):
+        self.router = APIRouter(prefix="/orders", tags=["orders"],)
+        self._controller = ControllerOrder()
+        self.init_routers()
 
-@router.get('/select')
-def fetch_select():
-    return controller.get_select()
+    def init_routers(self):
+        self.router.add_api_route('', methods=["GET"], endpoint=self.fetch_all)
+        self.router.add_api_route('/select', methods=["GET"], endpoint=self.fetch_select)
+        self.router.add_api_route('', methods=["POST"], endpoint=self.register)
+        self.router.add_api_route('/{id}', methods=["DELETE"], endpoint=self.delete)
+        self.router.add_api_route('/{id}', methods=["GET"], endpoint=self.find)
+        self.router.add_api_route('/{id}', methods=["PUT"], endpoint=self.update)
 
-@router.post('')
-def register_orders(request:Orders_schema,Authorization: Union[List[str], None] = Header(default=None)):
-    return controller.insert_controller(request,Authorization)
+    def fetch_all(self):
+        return self._controller.get_all()
 
-@router.delete('/{id}')
-def delete(id: int):
-    return controller.delete_controller(id)
+    def fetch_select(self):
+        return self._controller.get_select()
 
-@router.get('/{id}')
-def find(id: int):
-    return controller.find_controller(id)
+    def register(self, request: Orders_schema, Authorization: Union[List[str], None] = Header(default=None)):
+        return self._controller.insert_controller(request, Authorization)
 
-@router.patch('/{id}')
-def update(id: int,request:Orders_schema):
-    return controller.update_controller(id,request)
+    def delete(self, id: int):
+        return self._controller.delete_controller(id)
+
+    def find(self, id: int):
+        return self._controller.find_controller(id)
+
+    def update(self, id: int, request: Orders_schema):
+        return self._controller.update_controller(id, request)
