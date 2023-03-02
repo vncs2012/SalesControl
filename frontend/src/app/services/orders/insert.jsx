@@ -1,30 +1,13 @@
-import PropTypes from "prop-types";
+import { Autocomplete, Button, Fab, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Paper, Select, Typography,} from "@mui/material";
+import { alertSucesso, Android12Switch, hideLoading, NumberFormatCustom, showLoading, } from "../../util";
+import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
+import React, { useState, useEffect } from "react";
+import { insert, get_select_insert } from "./api";
+import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import TextField from "@mui/material/TextField";
-import { insert, get_select_insert } from "./api";
-import React, { useState, useEffect } from "react";
-import CloseIcon from "@mui/icons-material/Close";
-import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
-import {
-  Autocomplete,
-  Button,
-  Fab,
-  FormControl,
-  FormControlLabel,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  Typography,
-} from "@mui/material";
-import {
-  alertSucesso,
-  Android12Switch,
-  hideLoading,
-  NumberFormatCustom,
-  showLoading,
-} from "../../util";
+import { Navigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 NumberFormatCustom.propTypes = {
   name: PropTypes.string.isRequired,
@@ -52,11 +35,11 @@ export const Insert = () => {
 
   useEffect(() => {
     const getSelectData = async () => {
-      // showLoading('Aguarde...')
+      showLoading('Aguarde...')
       let { data } = await get_select_insert();
       if (data) {
         setSelect(data);
-        // hideLoading()
+        hideLoading()
       }
     };
     getSelectData();
@@ -64,12 +47,11 @@ export const Insert = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(form);
     showLoading();
     const { data } = await insert(form);
     if (data.status === 201) {
       hideLoading();
-      alertSucesso(true, setSave, true);
+      alertSucesso(true, setSave);
     }
   };
 
@@ -84,11 +66,8 @@ export const Insert = () => {
   };
 
   const handleInputChange = (index, event) => {
-    console.log(index, event);
     form.items[index][event.target.name] =
-      event.target.name == "bo_border"
-        ? event.target.checked
-        : event.target.value;
+      event.target.name == "bo_border" ? event.target.checked: event.target.value;
       setForm({...form})
   };
   return (
@@ -216,6 +195,9 @@ export const Insert = () => {
           </Button>
         </Grid>
       </Grid>
+      {save && (
+        <Navigate to="/orders" replace={true} />
+      )}
     </Paper>
   );
 };

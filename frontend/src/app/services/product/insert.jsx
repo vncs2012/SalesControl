@@ -34,9 +34,10 @@ export const Insert = () => {
     const { data } = await insert(form)
     if (data.status === 201) {
       hideLoading()
-      alertSucesso(true, setSave, true)
+      alertSucesso(true, setSave)
     }
   }
+  
   return (
     <Paper elevation={3} sx={{ p: 2, width: '100%' }}>
       <form className={classes.root} noValidate autoComplete="off">

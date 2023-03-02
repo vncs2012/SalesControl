@@ -27,6 +27,25 @@ create table sales.installment(
     constraint fk_installment_sales FOREIGN KEY (id_sales) references sales.sales(id_sales)
 );
 
+CREATE TABLE sales.products (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description text null,
+  price NUMERIC(10,2) NOT NULL,
+  date_added DATE  default now(),
+  price_edge NUMERIC(10,2) NULL
+);
+
+CREATE TABLE sales.items (
+  id_items SERIAL PRIMARY KEY,
+  id_sales INTEGER REFERENCES sales.sales(id_sales),
+  id_product INTEGER REFERENCES sales.products(id),
+  bo_border boolean,
+  purchase_quantity INTEGER,
+  description text
+);
+ALTER TABLE sales.sales ADD id_client int4 null CONSTRAINT fk_salest_id_client  REFERENCES client.client(id_client);
+
 create schema client;
 
 create table client.client(
@@ -58,3 +77,18 @@ create table client.client_sales(
     constraint fk_client_sales_client FOREIGN KEY (id_client) references client.client(id_client),
     constraint fk_client_sales_sales FOREIGN KEY (id_sales) references sales.sales(id_sales)
 )
+
+create schema client;
+
+create table client.client(
+    id_client serial not null primary key,
+    no_client text not null,
+    dt_birth date null,
+    tp_sex bpchar(1) not null,
+    nu_document text null,
+    nu_contact text null,
+    id_schooling integer null,
+    email text null,
+    id_marital_status integer null,
+    address text not null
+);

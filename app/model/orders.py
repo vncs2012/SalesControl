@@ -6,6 +6,7 @@ from db.classes.Client import Client
 from db.interface.model import Model
 from sqlalchemy import Date, cast
 from sqlalchemy.sql import func
+import calendar
 import datetime
 
 class Orders(Model):
@@ -73,15 +74,17 @@ class Orders(Model):
         return {'total':day.total,'date':today}
 
     def get_week_sale(self)-> dict:
-        week_today = (datetime.date.today() - datetime.timedelta(days=7))
         today = datetime.date.today()
-        week =self. db.session.query(func.sum(Sales.nu_value).label("total")).filter(cast(Sales.dt_sale,Date) >= week_today,cast(Sales.dt_sale,Date) <= today).first()
+        week_init = today - datetime.timedelta(days=today.weekday())
+        week_end = week_init + datetime.timedelta(days=6)
+        week =self. db.session.query(func.sum(Sales.nu_value).label("total")).filter(cast(Sales.dt_sale,Date) >= week_init,cast(Sales.dt_sale,Date) <= week_end).first()
         return {'total':week.total}
 
     def get_month_sale(self) -> dict:
-        month_today = (datetime.date.today() - datetime.timedelta(days=30))
         today = datetime.date.today()
-        month_today = self.db.session.query(func.sum(Sales.nu_value).label("total")).filter(cast(Sales.dt_sale,Date) >= month_today,cast(Sales.dt_sale,Date) <= today).first()
+        one_day_month = today.replace(day=1)
+        last_day_month = today.replace(day=calendar.monthrange(today.year, today.month)[1])
+        month_today = self.db.session.query(func.sum(Sales.nu_value).label("total")).filter(cast(Sales.dt_sale,Date) >= one_day_month,cast(Sales.dt_sale,Date) <= last_day_month).first()
         return {'total':month_today.total}
 
     def select(self):
