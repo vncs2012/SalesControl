@@ -77,10 +77,10 @@ export const Detail = ({ open, handleClose, id }) => {
                     {Object.keys(data).length > 0 ? (
                         <>
                             <Typography variant="h5" gutterBottom>
-                                        <strong>Cliente: </strong>{ data.Client.no_client ?? 'Não Identificado'}
+                                        <strong>Cliente: </strong>{ data.Client.no_client ?data.Client.no_client : 'Não Identificado'}
                             </Typography>
                             <Typography variant="h5" gutterBottom>
-                                <strong>Valor Compra: </strong>R$ {data.Sales.nu_value ?? 0.00}
+                                <strong>Valor Compra: </strong>R$ {data.Sales.nu_value ?data.Sales.nu_value: 0.00}
                             </Typography>
                             <Typography variant="h5" gutterBottom>
                                 <strong>Data Compra: </strong>{formatDate(data.Sales.dt_sale) }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Grid from '@mui/material/Grid';
-import { makeStyles } from "@mui/styles";
 import SendIcon from '@mui/icons-material/Send';
 import { NumericFormat } from 'react-number-format';
 import { Button, Paper, TextField } from '@mui/material'
@@ -8,18 +7,17 @@ import { Navigate } from 'react-router-dom';
 import { alertSucesso, hideLoading, showLoading } from '../../util';
 import { insert } from './api';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '99%',
-    },
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     '& .MuiTextField-root': {
+//       margin: theme.spacing(1),
+//       width: '99%',
+//     },
+//   },
+// }));
 export const Insert = () => {
   const [form, setForm] = useState({ name: '', price: '', description: '', price_edge: '' });
   const [save, setSave] = useState(false)
-  const classes = useStyles();
 
   const handleChange = (event) => {
     setForm({
@@ -40,7 +38,7 @@ export const Insert = () => {
   
   return (
     <Paper elevation={3} sx={{ p: 2, width: '100%' }}>
-      <form className={classes.root} noValidate autoComplete="off">
+      <form noValidate autoComplete="off">
         <Grid container spacing={2}  >
           <Grid item xs={12} sm={6} lg={6} xl={6}>
             <TextField

@@ -11,7 +11,6 @@ import { Update as UpdateUser } from "../services/user/update";
 import { Orders } from "../services/orders";
 import { Insert as InsertOrders } from "../services/orders/insert";
 import { List as ListOrders} from "../services/orders/list";
-import { Update as UpdateOrders } from "../services/orders/update";
 
 
 import { Client } from "../services/client";
@@ -41,7 +40,6 @@ export const Routers = () => {
       <Route path="orders/" element={<Orders />} >
         <Route index element={<ListOrders />} />
         <Route path="add" element={<InsertOrders />} />
-        <Route path=":id/" element={<UpdateOrders />} />
       </Route>
         <Route path="client/" element={<Client />} >
         <Route index element={<ListClient />} />

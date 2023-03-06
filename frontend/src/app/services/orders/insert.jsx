@@ -1,5 +1,23 @@
-import { Autocomplete, Button, Fab, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Paper, Select, Typography,} from "@mui/material";
-import { alertSucesso, Android12Switch, hideLoading, NumberFormatCustom, showLoading, } from "../../util";
+import {
+  Autocomplete,
+  Button,
+  Fab,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Typography,
+} from "@mui/material";
+import {
+  alertSucesso,
+  Android12Switch,
+  hideLoading,
+  NumberFormatCustom,
+  showLoading,
+} from "../../util";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import React, { useState, useEffect } from "react";
 import { insert, get_select_insert } from "./api";
@@ -20,14 +38,21 @@ export const Insert = () => {
   const [form, setForm] = useState({
     id_client: "",
     delivery: false,
-    items: [ {  id_product: "",  bo_border: false,  purchase_quantity: "",  description: "",}],
+    items: [
+      {
+        id_product: "",
+        bo_border: false,
+        purchase_quantity: "",
+        description: "",
+      },
+    ],
   });
 
   const handleChange = (event) => {
     setForm({
       ...form,
       [event.target.name]:
-        event.target.name == "delivery"
+        event.target.name === "delivery"
           ? event.target.checked
           : event.target.value,
     });
@@ -35,11 +60,11 @@ export const Insert = () => {
 
   useEffect(() => {
     const getSelectData = async () => {
-      showLoading('Aguarde...')
+      showLoading("Aguarde...");
       let { data } = await get_select_insert();
       if (data) {
         setSelect(data);
-        hideLoading()
+        hideLoading();
       }
     };
     getSelectData();
@@ -56,19 +81,26 @@ export const Insert = () => {
   };
 
   const handleAddCustomerProduct = () => {
-    const newItem ={  id_product: "",  bo_border: false,  purchase_quantity: "",  description: "",}
-    setForm({...form, items:[...form.items, newItem]})
+    const newItem = {
+      id_product: "",
+      bo_border: false,
+      purchase_quantity: "",
+      description: "",
+    };
+    setForm({ ...form, items: [...form.items, newItem] });
   };
 
   const handleRemoveCustomerProduct = (index) => {
-    const newItems = form.items.filter((_, i) => i !== index)
-    setForm({...form, items:newItems})
+    const newItems = form.items.filter((_, i) => i !== index);
+    setForm({ ...form, items: newItems });
   };
 
   const handleInputChange = (index, event) => {
     form.items[index][event.target.name] =
-      event.target.name == "bo_border" ? event.target.checked: event.target.value;
-      setForm({...form})
+      event.target.name === "bo_border"
+        ? event.target.checked
+        : event.target.value;
+    setForm({ ...form });
   };
   return (
     <Paper sx={{ width: "100vh", padding: 2, marginTop: 5 }} elevation={4}>
@@ -82,7 +114,7 @@ export const Insert = () => {
                 id_client: newValue ? newValue.id_client : "",
               });
             }}
-            options={select["client"] ?? []}
+            options={select["client"] ? select["client"] : []}
             getOptionLabel={(option) =>
               option.nu_document + " - " + option.no_client
             }
@@ -195,9 +227,7 @@ export const Insert = () => {
           </Button>
         </Grid>
       </Grid>
-      {save && (
-        <Navigate to="/orders" replace={true} />
-      )}
+      {save && <Navigate to="/orders" replace={true} />}
     </Paper>
   );
 };
